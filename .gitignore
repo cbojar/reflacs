@@ -30,3 +30,6 @@ replay_pid*
 .classpath
 .settings/
 .project
+
+# audio data folders
+audio/
