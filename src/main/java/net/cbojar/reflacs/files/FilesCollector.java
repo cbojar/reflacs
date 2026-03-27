@@ -27,8 +27,7 @@ public final class FilesCollector implements Collector {
 	public Iterable<Flac> collect() {
 		try (Stream<Path> stream = Files.find(Paths.get(configuration.path()), 10, FilesCollector::isFlacFile)) {
 			return stream
-				.map(Path::toString)
-				.map(Flac::of)
+				.map(path -> Flac.of(path.toString(), bytesFor(path)))
 				.toList();
 		} catch (final IOException ex) {
 			throw new UncheckedIOException(ex);
@@ -42,5 +41,13 @@ public final class FilesCollector implements Collector {
 	private static String fileSuffixOf(final Path path) {
 		final String fileName = path.getFileName().toString();
 		return fileName.substring(fileName.length() - 5);
+	}
+
+	private static byte[] bytesFor(final Path path) {
+		try {
+			return Files.readAllBytes(path);
+		} catch (final IOException ex) {
+			throw new UncheckedIOException(ex);
+		}
 	}
 }
