@@ -18,6 +18,6 @@ public final class FFMPEG implements Converter {
 
 	@Override
 	public Converted convert(final Flac flac) {
-		return null;
+		return Converted.of(flac.name());
 	}
 }
