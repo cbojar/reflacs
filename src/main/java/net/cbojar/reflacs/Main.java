@@ -8,10 +8,10 @@ import java.nio.file.Path;
 import net.cbojar.reflacs.configuration.DestinationConfiguration;
 import net.cbojar.reflacs.configuration.SourceConfiguration;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
+import net.cbojar.reflacs.ffmpeg.FFMPEGConfiguration;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.Converted;
-import net.cbojar.reflacs.media.Converter;
 import net.cbojar.reflacs.media.Flac;
 
 public final class Main {
@@ -25,10 +25,10 @@ public final class Main {
 		final DestinationConfiguration destinationConfiguration = DestinationConfiguration.load(destination);
 
 		final Collector collector = FilesCollector.create(sourceConfiguration);
-		final Converter converter = FFMPEG.converter(destinationConfiguration);
+		final FFMPEG converter = FFMPEG.of(new FFMPEGConfiguration());
 
 		for (final Flac flac : collector.collect()) {
-			writeToDestination(converter.convert(flac), source, destination);
+			writeToDestination(converter.convert(flac), source, destinationConfiguration.toString());
 		}
 	}
 

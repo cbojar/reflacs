@@ -14,22 +14,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import net.cbojar.reflacs.media.Converted;
-import net.cbojar.reflacs.media.Converter;
-import net.cbojar.reflacs.media.ConverterConfiguration;
 import net.cbojar.reflacs.media.Flac;
 
-public final class FFMPEG implements Converter {
-	private final ConverterConfiguration configuration;
+public final class FFMPEG {
+	private final FFMPEGConfiguration configuration;
 
-	private FFMPEG(final ConverterConfiguration configuration) {
+	private FFMPEG(final FFMPEGConfiguration configuration) {
 		this.configuration = configuration;
 	}
 
-	public static Converter converter(final ConverterConfiguration configuration) {
+	public static FFMPEG of(final FFMPEGConfiguration configuration) {
 		return new FFMPEG(configuration);
 	}
 
-	@Override
 	public Converted convert(final Flac flac) throws IOException {
 		final List<String> command = new ArrayList<>(Arrays.asList("ffmpeg", "-i", "-", "-f", configuration.outputFormat()));
 		command.addAll(configuration.additionalOptions());
