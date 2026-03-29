@@ -3,8 +3,7 @@ package net.cbojar.reflacs.ffmpeg;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import net.cbojar.reflacs.media.Converted;
-import net.cbojar.reflacs.media.Flac;
+import net.cbojar.reflacs.media.MediaData;
 
 public final class FFMPEG {
 	private final FFMPEGConfiguration configuration;
@@ -17,7 +16,7 @@ public final class FFMPEG {
 		return new FFMPEG(configuration);
 	}
 
-	public Converted convert(final Flac flac) throws IOException {
+	public MediaData convert(final MediaData flac) throws IOException {
 		final ByteArrayOutputStream convertedBytes = new ByteArrayOutputStream();
 
 		Run.start(Command.build(configuration)).withBlock(pipes -> {
@@ -25,10 +24,6 @@ public final class FFMPEG {
 			pipes.pipeOut(inputStream -> convertedBytes.write(inputStream.readAllBytes()));
 		});
 
-		return Converted.of(rename(flac, configuration.outputFormat()), convertedBytes.toByteArray());
-	}
-
-	private static String rename(final Flac flac, final String outputFormat) {
-		return String.format("%s.%s", flac.name().substring(0, flac.name().length() - 5), outputFormat);
+		return MediaData.of(configuration.outputFormat(), convertedBytes.toByteArray());
 	}
 }

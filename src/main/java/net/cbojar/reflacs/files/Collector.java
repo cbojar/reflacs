@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.media;
+package net.cbojar.reflacs.files;
 
 public interface Collector {
 	Iterable<Flac> collect();

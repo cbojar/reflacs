@@ -4,31 +4,28 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
-import net.cbojar.reflacs.configuration.SourceConfiguration;
-import net.cbojar.reflacs.media.Collector;
-import net.cbojar.reflacs.media.Flac;
+import net.cbojar.reflacs.configuration.Configuration;
 
 public final class FilesCollector implements Collector {
-	private final SourceConfiguration configuration;
+	private final Configuration configuration;
 
-	private FilesCollector(final SourceConfiguration configuration) {
+	private FilesCollector(final Configuration configuration) {
 		this.configuration = configuration;
 	}
 
-	public static Collector create(final SourceConfiguration configuration) {
-		return new FilesCollector(configuration);
+	public static Collector create(final Configuration source) {
+		return new FilesCollector(source);
 	}
 
 	@Override
 	public Iterable<Flac> collect() {
-		try (Stream<Path> stream = Files.find(Paths.get(configuration.path()), 10, FilesCollector::isFlacFile)) {
+		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FlacIterator(flacs.iterator());
 		} catch (final IOException ex) {
@@ -47,6 +44,7 @@ public final class FilesCollector implements Collector {
 
 	private static class FlacIterator implements Iterator<Flac> {
 		private final Iterator<Path> flacs;
+
 		public FlacIterator(final Iterator<Path> flacs) {
 			this.flacs = flacs;
 		}
@@ -63,7 +61,7 @@ public final class FilesCollector implements Collector {
 			}
 
 			final Path path = flacs.next();
-			return Flac.of(path.toString(), bytesFor(path));
+			return Flac.of(path, bytesFor(path));
 		}
 
 		private static byte[] bytesFor(final Path path) {
