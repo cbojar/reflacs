@@ -7,11 +7,12 @@ import java.nio.file.Path;
 
 import net.cbojar.reflacs.configuration.Configuration;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
-import net.cbojar.reflacs.ffmpeg.FFMPEGConfiguration;
 import net.cbojar.reflacs.files.Collector;
 import net.cbojar.reflacs.files.Converted;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.Flac;
+import net.cbojar.reflacs.formats.Format;
+import net.cbojar.reflacs.formats.Formats;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class Main {
@@ -24,8 +25,8 @@ public final class Main {
 		final Configuration configuration = Configuration.load(source, destination);
 
 		final Collector collector = FilesCollector.create(configuration);
-		final FFMPEGConfiguration ffmpegConfiguration = FFMPEGConfiguration.loadFrom(configuration);
-		final FFMPEG converter = FFMPEG.of(ffmpegConfiguration);
+		final Format format = Formats.withOptions(configuration.options());
+		final FFMPEG converter = FFMPEG.of(format);
 
 		for (final Flac flac : collector.collect()) {
 			final MediaData convertedData = converter.convert(flac.data());
