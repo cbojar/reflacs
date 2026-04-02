@@ -27,7 +27,7 @@ public final class FilesCollector implements Collector {
 	public Iterable<Flac> collect() {
 		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
-			return () -> new FlacIterator(flacs.iterator());
+			return () -> new FlacIterator(configuration.source(), flacs.iterator());
 		} catch (final IOException ex) {
 			throw new UncheckedIOException(ex);
 		}
@@ -43,9 +43,11 @@ public final class FilesCollector implements Collector {
 	}
 
 	private static class FlacIterator implements Iterator<Flac> {
+		private final Path source;
 		private final Iterator<Path> flacs;
 
-		public FlacIterator(final Iterator<Path> flacs) {
+		public FlacIterator(final Path source, final Iterator<Path> flacs) {
+			this.source = source;
 			this.flacs = flacs;
 		}
 
@@ -61,7 +63,8 @@ public final class FilesCollector implements Collector {
 			}
 
 			final Path path = flacs.next();
-			return Flac.of(path, bytesFor(path));
+			final Path relativePath = source.relativize(path);
+			return Flac.of(relativePath, bytesFor(path));
 		}
 
 		private static byte[] bytesFor(final Path path) {

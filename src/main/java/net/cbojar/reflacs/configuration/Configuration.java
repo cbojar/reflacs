@@ -48,8 +48,8 @@ public final class Configuration {
 		return destination;
 	}
 
-	public Path mapSourceToDestination(final Path path) {
-		return destination.resolve(source.relativize(path));
+	public Path mapToDestination(final Path path) {
+		return destination.resolve(path);
 	}
 
 	public Options options() {
