@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
-import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.media.MediaData;
+import net.cbojar.reflacs.storage.Collector;
 
 public final class FilesCollector implements Collector<Path> {
 	private final Path source;

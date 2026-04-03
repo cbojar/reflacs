@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.FilesDistributor;
-import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.Media;
+import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
 
 public final class Main {
