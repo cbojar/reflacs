@@ -7,11 +7,11 @@ import java.nio.file.Path;
 
 import net.cbojar.reflacs.configuration.Configuration;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
-import net.cbojar.reflacs.files.Collector;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.PathKeyMapper;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
+import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.KeyMapper;
 import net.cbojar.reflacs.media.MediaData;
 

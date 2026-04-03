@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import net.cbojar.reflacs.configuration.Configuration;
+import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class FilesCollector implements Collector<Path> {
