@@ -12,13 +12,13 @@ import net.cbojar.reflacs.storage.Source;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
-		final String source = args[0];
-		final String destination = args[1];
+		final String sourceRoot = args[0];
+		final String destinationRoot = args[1];
 
-		System.out.printf("Source: %s, Distributor: %s%n", source, destination);
+		System.out.printf("Source: %s, Distributor: %s%n", sourceRoot, destinationRoot);
 
-		final Collector<Path> collector = FilesCollector.create(source);
-		final Distributor<Path> distributor = FilesDistributor.to(destination);
+		final Collector<Path> collector = FilesCollector.create(sourceRoot);
+		final Distributor<Path> distributor = FilesDistributor.to(destinationRoot);
 		final FFMPEG converter = FFMPEG.of(distributor.format());
 
 		for (final Source<Path> flac : collector.collect()) {

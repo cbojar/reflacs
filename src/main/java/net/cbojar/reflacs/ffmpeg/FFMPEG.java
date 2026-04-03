@@ -18,14 +18,14 @@ public final class FFMPEG {
 		return new FFMPEG(format);
 	}
 
-	public <K> Destination<K> convert(final Source<K> media) throws IOException {
+	public <K> Destination<K> convert(final Source<K> source) throws IOException {
 		final ByteArrayOutputStream convertedBytes = new ByteArrayOutputStream();
 
 		Run.start(Command.build(format)).withBlock(pipes -> {
-			pipes.pipeIn(media::writeTo);
+			pipes.pipeIn(source::writeTo);
 			pipes.pipeOut(inputStream -> convertedBytes.write(inputStream.readAllBytes()));
 		});
 
-		return Destination.of(media.key(), convertedBytes.toByteArray());
+		return Destination.of(source.key(), convertedBytes.toByteArray());
 	}
 }
