@@ -32,8 +32,8 @@ public final class Main {
 		final FFMPEG converter = FFMPEG.of(format);
 
 		for (final Flac<Path> flac : collector.collect()) {
-			final MediaData<Path> convertedData = converter.convert(flac.data());
-			final Converted<Path> converted = Converted.of(keyMapper.map(flac.key()), convertedData);
+			final MediaData<Path> convertedData = converter.convert(flac.data(), keyMapper);
+			final Converted<Path> converted = Converted.of(convertedData.key(), convertedData);
 			writeToDestination(converted);
 		}
 	}
