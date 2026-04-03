@@ -1,32 +1,30 @@
 package net.cbojar.reflacs.files;
 
-import java.nio.file.Path;
-
 import net.cbojar.reflacs.media.MediaData;
 
-public final class Flac {
-	private final Path path;
+public final class Flac<K> {
+	private final K key;
 	private final MediaData data;
 
-	private Flac(final Path path, final MediaData data) {
-		this.path = path;
+	private Flac(final K key, final MediaData data) {
+		this.key = key;
 		this.data = data;
 	}
 
-	public static Flac of(final Path path, final MediaData data) {
-		return new Flac(path, data);
+	public static <K> Flac<K> of(final K key, final MediaData data) {
+		return new Flac<>(key, data);
 	}
 
-	public static Flac of(final Path path, final byte[] data) {
-		return of(path, MediaData.flac(data));
+	public static <K> Flac<K> of(final K key, final byte[] data) {
+		return of(key, MediaData.flac(data));
 	}
 
 	public String name() {
-		return path.toString();
+		return key.toString();
 	}
 
-	public Path path() {
-		return path;
+	public K key() {
+		return key;
 	}
 
 	public MediaData data() {
@@ -35,6 +33,6 @@ public final class Flac {
 
 	@Override
 	public String toString() {
-		return path.toString();
+		return key.toString();
 	}
 }

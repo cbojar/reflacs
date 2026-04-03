@@ -12,19 +12,19 @@ import java.util.stream.Stream;
 
 import net.cbojar.reflacs.configuration.Configuration;
 
-public final class FilesCollector implements Collector {
+public final class FilesCollector implements Collector<Path> {
 	private final Configuration configuration;
 
 	private FilesCollector(final Configuration configuration) {
 		this.configuration = configuration;
 	}
 
-	public static Collector create(final Configuration source) {
+	public static Collector<Path> create(final Configuration source) {
 		return new FilesCollector(source);
 	}
 
 	@Override
-	public Iterable<Flac> collect() {
+	public Iterable<Flac<Path>> collect() {
 		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FlacIterator(configuration.source(), flacs.iterator());
@@ -42,7 +42,7 @@ public final class FilesCollector implements Collector {
 		return fileName.substring(fileName.length() - 5);
 	}
 
-	private static class FlacIterator implements Iterator<Flac> {
+	private static class FlacIterator implements Iterator<Flac<Path>> {
 		private final Path source;
 		private final Iterator<Path> flacs;
 
@@ -57,7 +57,7 @@ public final class FilesCollector implements Collector {
 		}
 
 		@Override
-		public Flac next() {
+		public Flac<Path> next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}

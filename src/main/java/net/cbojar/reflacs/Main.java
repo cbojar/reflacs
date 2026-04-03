@@ -24,13 +24,13 @@ public final class Main {
 
 		final Configuration configuration = Configuration.load(source, destination);
 
-		final Collector collector = FilesCollector.create(configuration);
+		final Collector<Path> collector = FilesCollector.create(configuration);
 		final Format format = Formats.withOptions(configuration.options());
 		final FFMPEG converter = FFMPEG.of(format);
 
-		for (final Flac flac : collector.collect()) {
+		for (final Flac<Path> flac : collector.collect()) {
 			final MediaData convertedData = converter.convert(flac.data());
-			final Path convertedPath = configuration.mapToDestination(flac.path());
+			final Path convertedPath = configuration.mapToDestination(flac.key());
 			final Converted converted = Converted.of(convertedPath, convertedData);
 			writeToDestination(converted);
 		}
