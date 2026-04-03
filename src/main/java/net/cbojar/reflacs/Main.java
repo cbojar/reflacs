@@ -22,7 +22,7 @@ public final class Main {
 		final FFMPEG converter = FFMPEG.of(distributor.format());
 
 		for (final Media<Path> flac : collector.collect()) {
-			distributor.distribute(Media.of(flac.key(), converter.convert(flac.data())));
+			distributor.distribute(converter.convert(flac));
 		}
 	}
 }

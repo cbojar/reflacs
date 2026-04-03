@@ -56,7 +56,7 @@ public final class FilesDistributor implements Distributor<Path> {
 
 		Files.createDirectories(destination.getParent());
 		try (OutputStream out = Files.newOutputStream(destination)) {
-			media.writeDataTo(out);
+			media.writeTo(out);
 		}
 	}
 }

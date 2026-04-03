@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import net.cbojar.reflacs.media.Media;
-import net.cbojar.reflacs.media.MediaData;
 import net.cbojar.reflacs.storage.Collector;
 
 public final class FilesCollector implements Collector<Path> {
@@ -69,7 +68,7 @@ public final class FilesCollector implements Collector<Path> {
 			}
 
 			final Path path = flacs.next();
-			return Media.of(toExternal(source, path), MediaData.of(bytesFor(path)));
+			return Media.of(toExternal(source, path), bytesFor(path));
 		}
 
 		private static Path toExternal(final Path source, final Path absolute) {
