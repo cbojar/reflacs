@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import net.cbojar.reflacs.configuration.Configuration;
+import net.cbojar.reflacs.media.MediaData;
 
 public final class FilesCollector implements Collector<Path> {
 	private final Configuration configuration;
@@ -24,7 +25,7 @@ public final class FilesCollector implements Collector<Path> {
 	}
 
 	@Override
-	public Iterable<Flac<Path>> collect() {
+	public Iterable<MediaData<Path>> collect() {
 		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FlacIterator(configuration.source(), flacs.iterator());
@@ -42,7 +43,7 @@ public final class FilesCollector implements Collector<Path> {
 		return fileName.substring(fileName.length() - 5);
 	}
 
-	private static class FlacIterator implements Iterator<Flac<Path>> {
+	private static class FlacIterator implements Iterator<MediaData<Path>> {
 		private final Path source;
 		private final Iterator<Path> flacs;
 
@@ -57,13 +58,13 @@ public final class FilesCollector implements Collector<Path> {
 		}
 
 		@Override
-		public Flac<Path> next() {
+		public MediaData<Path> next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
 
 			final Path path = flacs.next();
-			return Flac.of(toExternal(source, path), bytesFor(path));
+			return MediaData.flac(toExternal(source, path), bytesFor(path));
 		}
 
 		private static Path toExternal(final Path source, final Path absolute) {

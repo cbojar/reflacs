@@ -8,9 +8,7 @@ import java.nio.file.Path;
 import net.cbojar.reflacs.configuration.Configuration;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
 import net.cbojar.reflacs.files.Collector;
-import net.cbojar.reflacs.files.Converted;
 import net.cbojar.reflacs.files.FilesCollector;
-import net.cbojar.reflacs.files.Flac;
 import net.cbojar.reflacs.files.PathKeyMapper;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
@@ -31,19 +29,17 @@ public final class Main {
 		final KeyMapper<Path> keyMapper = PathKeyMapper.create(configuration.destination(), format);
 		final FFMPEG converter = FFMPEG.of(format);
 
-		for (final Flac<Path> flac : collector.collect()) {
-			final MediaData<Path> convertedData = converter.convert(flac.data(), keyMapper);
-			final Converted<Path> converted = Converted.of(convertedData.key(), convertedData);
-			writeToDestination(converted);
+		for (final MediaData<Path> flac : collector.collect()) {
+			writeToDestination(converter.convert(flac, keyMapper));
 		}
 	}
 
-	private static void writeToDestination(final Converted<Path> converted) {
+	private static void writeToDestination(final MediaData<Path> converted) {
 		System.out.println(converted);
 
 		try {
-			Files.createDirectories(converted.path().getParent());
-			Files.write(converted.path(), converted.bytes());
+			Files.createDirectories(converted.key().getParent());
+			Files.write(converted.key(), converted.bytes());
 		} catch (final IOException ex) {
 			throw new UncheckedIOException(ex);
 		}
