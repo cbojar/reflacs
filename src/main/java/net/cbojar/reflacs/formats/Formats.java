@@ -2,8 +2,6 @@ package net.cbojar.reflacs.formats;
 
 import java.io.IOException;
 
-import net.cbojar.reflacs.configuration.Options;
-
 public final class Formats {
 	public static Format withOptions(final Options options) throws IOException {
 		final String formatName = options.get("output-format")

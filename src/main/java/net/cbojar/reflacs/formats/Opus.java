@@ -2,8 +2,6 @@ package net.cbojar.reflacs.formats;
 
 import java.util.Optional;
 
-import net.cbojar.reflacs.configuration.Options;
-
 final class Opus implements Format {
 	private final Options options;
 

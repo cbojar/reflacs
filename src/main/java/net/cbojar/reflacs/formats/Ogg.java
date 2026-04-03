@@ -2,8 +2,6 @@ package net.cbojar.reflacs.formats;
 
 import java.util.Optional;
 
-import net.cbojar.reflacs.configuration.Options;
-
 /**
  * Bitrate for OGGs seems to bottom out at 64K, and anything below that will result in an error.
  * @see <a href="https://trac.ffmpeg.org/wiki/TheoraVorbisEncodingGuide">https://trac.ffmpeg.org/wiki/TheoraVorbisEncodingGuide</a>

@@ -2,8 +2,6 @@ package net.cbojar.reflacs.formats;
 
 import java.util.Optional;
 
-import net.cbojar.reflacs.configuration.Options;
-
 /**
  * @see <a href="https://trac.ffmpeg.org/wiki/Encode/AAC">https://trac.ffmpeg.org/wiki/Encode/AAC</a>
  */

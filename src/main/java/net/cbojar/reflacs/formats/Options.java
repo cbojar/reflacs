@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.configuration;
+package net.cbojar.reflacs.formats;
 
 import java.util.Optional;
 import java.util.Properties;

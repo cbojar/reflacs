@@ -7,9 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-import net.cbojar.reflacs.configuration.Options;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
+import net.cbojar.reflacs.formats.Options;
 import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.storage.Distributor;
 

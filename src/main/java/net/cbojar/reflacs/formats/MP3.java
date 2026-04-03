@@ -2,8 +2,6 @@ package net.cbojar.reflacs.formats;
 
 import java.util.Optional;
 
-import net.cbojar.reflacs.configuration.Options;
-
 /**
  * Bitrate for MP3s seems to bottom out at 32K, and anything below that will result in a 32K bitrate.
  * @see <a href="https://trac.ffmpeg.org/wiki/Encode/MP3">https://trac.ffmpeg.org/wiki/Encode/MP3</a>
