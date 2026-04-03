@@ -2,25 +2,20 @@ package net.cbojar.reflacs.files;
 
 import java.nio.file.Path;
 
-import net.cbojar.reflacs.formats.Format;
-import net.cbojar.reflacs.media.KeyMapper;
-
-public final class PathKeyMapper implements KeyMapper<Path> {
+public final class PathKeyMapper {
 	private final Path destination;
-	private final Format format;
+	private final String extension;
 
-	private PathKeyMapper(final Path destination, final Format format) {
+	private PathKeyMapper(final Path destination, final String extension) {
 		this.destination = destination;
-		this.format = format;
+		this.extension = extension;
 	}
 
-	public static KeyMapper<Path> create(final Path destination, final Format format) {
-		return new PathKeyMapper(destination, format);
+	public static PathKeyMapper create(final Path destination, final String extension) {
+		return new PathKeyMapper(destination, extension);
 	}
 
-	@Override
 	public Path map(final Path key) {
-		final Path withSuffix = Path.of(String.format("%s.%s", key, format.extension()));
-		return destination.resolve(withSuffix);
+		return destination.resolve(String.format("%s.%s", key, extension));
 	}
 }

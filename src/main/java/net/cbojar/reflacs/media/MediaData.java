@@ -1,38 +1,20 @@
 package net.cbojar.reflacs.media;
 
-public final class MediaData<K> {
-	private final K key;
-	private final String type;
+import java.io.IOException;
+import java.io.OutputStream;
+
+public final class MediaData {
 	private final byte[] data;
 
-	private MediaData(final K key, final String type, final byte[] data) {
-		this.key = key;
-		this.type = type;
+	private MediaData(final byte[] data) {
 		this.data = data;
 	}
 
-	public static <K> MediaData<K> of(final K key, final String type, final byte[] data) {
-		return new MediaData<>(key, type, data);
+	public static MediaData of(final byte[] data) {
+		return new MediaData(data);
 	}
 
-	public static <K> MediaData<K> flac(final K key, final byte[] data) {
-		return of(key, "flac", data);
-	}
-
-	public K key() {
-		return key;
-	}
-
-	public String type() {
-		return type;
-	}
-
-	public byte[] bytes() {
-		return data;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("%s(%s)", key.toString(), type);
+	public void writeTo(final OutputStream out) throws IOException {
+		out.write(data);
 	}
 }

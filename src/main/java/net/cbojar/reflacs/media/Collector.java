@@ -1,5 +1,5 @@
 package net.cbojar.reflacs.media;
 
 public interface Collector<K> {
-	Iterable<MediaData<K>> collect();
+	Iterable<Media<K>> collect();
 }

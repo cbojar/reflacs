@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import net.cbojar.reflacs.configuration.Configuration;
 import net.cbojar.reflacs.media.Collector;
+import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class FilesCollector implements Collector<Path> {
@@ -26,7 +27,7 @@ public final class FilesCollector implements Collector<Path> {
 	}
 
 	@Override
-	public Iterable<MediaData<Path>> collect() {
+	public Iterable<Media<Path>> collect() {
 		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FlacIterator(configuration.source(), flacs.iterator());
@@ -44,7 +45,7 @@ public final class FilesCollector implements Collector<Path> {
 		return fileName.substring(fileName.length() - 5);
 	}
 
-	private static class FlacIterator implements Iterator<MediaData<Path>> {
+	private static class FlacIterator implements Iterator<Media<Path>> {
 		private final Path source;
 		private final Iterator<Path> flacs;
 
@@ -59,13 +60,13 @@ public final class FilesCollector implements Collector<Path> {
 		}
 
 		@Override
-		public MediaData<Path> next() {
+		public Media<Path> next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
 
 			final Path path = flacs.next();
-			return MediaData.flac(toExternal(source, path), bytesFor(path));
+			return Media.of(toExternal(source, path), MediaData.of(bytesFor(path)));
 		}
 
 		private static Path toExternal(final Path source, final Path absolute) {

@@ -1,7 +1,7 @@
 package net.cbojar.reflacs;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -12,8 +12,7 @@ import net.cbojar.reflacs.files.PathKeyMapper;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
 import net.cbojar.reflacs.media.Collector;
-import net.cbojar.reflacs.media.KeyMapper;
-import net.cbojar.reflacs.media.MediaData;
+import net.cbojar.reflacs.media.Media;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
@@ -26,22 +25,20 @@ public final class Main {
 
 		final Collector<Path> collector = FilesCollector.create(configuration);
 		final Format format = Formats.withOptions(configuration.options());
-		final KeyMapper<Path> keyMapper = PathKeyMapper.create(configuration.destination(), format);
+		final PathKeyMapper keyMapper = PathKeyMapper.create(configuration.destination(), format.extension());
 		final FFMPEG converter = FFMPEG.of(format);
 
-		for (final MediaData<Path> flac : collector.collect()) {
-			writeToDestination(converter.convert(flac, keyMapper));
+		for (final Media<Path> flac : collector.collect()) {
+			writeToDestination(Media.of(keyMapper.map(flac.key()), converter.convert(flac.data())));
 		}
 	}
 
-	private static void writeToDestination(final MediaData<Path> converted) {
+	private static void writeToDestination(final Media<Path> converted) throws IOException {
 		System.out.println(converted);
 
-		try {
-			Files.createDirectories(converted.key().getParent());
-			Files.write(converted.key(), converted.bytes());
-		} catch (final IOException ex) {
-			throw new UncheckedIOException(ex);
+		Files.createDirectories(converted.key().getParent());
+		try (OutputStream out = Files.newOutputStream(converted.key())) {
+			converted.writeDataTo(out);
 		}
 	}
 }
