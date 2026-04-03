@@ -10,27 +10,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
-import net.cbojar.reflacs.configuration.Configuration;
 import net.cbojar.reflacs.media.Collector;
 import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class FilesCollector implements Collector<Path> {
-	private final Configuration configuration;
+	private final Path source;
 
-	private FilesCollector(final Configuration configuration) {
-		this.configuration = configuration;
+	private FilesCollector(final Path source) {
+		this.source = source;
 	}
 
-	public static Collector<Path> create(final Configuration source) {
+	public static Collector<Path> create(final String source) {
+		return create(Path.of(source));
+	}
+
+	public static Collector<Path> create(final Path source) {
 		return new FilesCollector(source);
 	}
 
 	@Override
 	public Iterable<Media<Path>> collect() {
-		try (Stream<Path> stream = Files.find(configuration.source(), 10, FilesCollector::isFlacFile)) {
+		try (Stream<Path> stream = Files.find(source, 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
-			return () -> new FlacIterator(configuration.source(), flacs.iterator());
+			return () -> new FlacIterator(source, flacs.iterator());
 		} catch (final IOException ex) {
 			throw new UncheckedIOException(ex);
 		}

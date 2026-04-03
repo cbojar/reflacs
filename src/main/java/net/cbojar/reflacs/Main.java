@@ -21,9 +21,9 @@ public final class Main {
 
 		System.out.printf("Source: %s, Destination: %s%n", source, destination);
 
-		final Configuration configuration = Configuration.load(source, destination);
+		final Configuration configuration = Configuration.load(destination);
 
-		final Collector<Path> collector = FilesCollector.create(configuration);
+		final Collector<Path> collector = FilesCollector.create(source);
 		final Format format = Formats.withOptions(configuration.options());
 		final PathKeyMapper keyMapper = PathKeyMapper.create(configuration.destination(), format.extension());
 		final FFMPEG converter = FFMPEG.of(format);

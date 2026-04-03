@@ -7,22 +7,20 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 public final class Configuration {
-	private final Path source;
 	private final Path destination;
 	private final Options options;
 
-	private Configuration(final Path source, final Path destination, final Options options) {
-		this.source = source;
+	private Configuration(final Path destination, final Options options) {
 		this.destination = destination;
 		this.options = options;
 	}
 
-	public static Configuration load(final String source, final String destination) throws IOException {
-		return load(Path.of(source), Path.of(destination));
+	public static Configuration load(final String destination) throws IOException {
+		return load(Path.of(destination));
 	}
 
-	public static Configuration load(final Path source, final Path destination) throws IOException {
-		return new Configuration(source, destination, readDestination(destination));
+	public static Configuration load(final Path destination) throws IOException {
+		return new Configuration(destination, readDestination(destination));
 	}
 
 	private static Options readDestination(final Path destination) throws IOException {
@@ -38,10 +36,6 @@ public final class Configuration {
 		}
 
 		return Options.of(properties);
-	}
-
-	public Path source() {
-		return source;
 	}
 
 	public Path destination() {
