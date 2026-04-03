@@ -1,7 +1,7 @@
 package net.cbojar.reflacs.ffmpeg;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.storage.Destination;
@@ -19,13 +19,13 @@ public final class FFMPEG {
 	}
 
 	public <K> Destination<K> convert(final Source<K> source) throws IOException {
-		final ByteArrayOutputStream convertedBytes = new ByteArrayOutputStream();
+		final AtomicReference<byte[]> bytesCaptor = new AtomicReference<>(new byte[0]);
 
 		Run.start(Command.build(format)).withBlock(pipes -> {
 			pipes.pipeIn(source::writeTo);
-			pipes.pipeOut(inputStream -> convertedBytes.write(inputStream.readAllBytes()));
+			pipes.pipeOut(inputStream -> bytesCaptor.set(inputStream.readAllBytes()));
 		});
 
-		return Destination.of(source.key(), convertedBytes.toByteArray());
+		return Destination.of(source.key(), bytesCaptor.get());
 	}
 }
