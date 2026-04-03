@@ -63,8 +63,12 @@ public final class FilesCollector implements Collector<Path> {
 			}
 
 			final Path path = flacs.next();
-			final Path relativePath = source.relativize(path);
-			return Flac.of(relativePath, bytesFor(path));
+			return Flac.of(toExternal(source, path), bytesFor(path));
+		}
+
+		private static Path toExternal(final Path source, final Path absolute) {
+			final String relativePath = source.relativize(absolute).toString();
+			return Path.of(relativePath.substring(0, relativePath.length() - 5));
 		}
 
 		private static byte[] bytesFor(final Path path) {

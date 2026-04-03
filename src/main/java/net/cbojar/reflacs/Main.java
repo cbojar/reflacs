@@ -30,7 +30,7 @@ public final class Main {
 
 		for (final Flac<Path> flac : collector.collect()) {
 			final MediaData<Path> convertedData = converter.convert(flac.data());
-			final Path convertedPath = configuration.mapToDestination(flac.key());
+			final Path convertedPath = configuration.mapToDestination(flac.key(), format.extension());
 			final Converted<Path> converted = Converted.of(convertedPath, convertedData);
 			writeToDestination(converted);
 		}

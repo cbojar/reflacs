@@ -14,12 +14,7 @@ public class Converted<K> {
 	}
 
 	public static <K> Converted<K> of(final Path path, final MediaData<K> data) {
-		return new Converted<>(replaceFlacSuffix(path, data.type()), data);
-	}
-
-	private static Path replaceFlacSuffix(final Path path, final String outputFormat) {
-		final String pathString = path.toString();
-		return Path.of(String.format("%s.%s", pathString.substring(0, pathString.length() - 5), outputFormat));
+		return new Converted<>(path, data);
 	}
 
 	public Path path() {
