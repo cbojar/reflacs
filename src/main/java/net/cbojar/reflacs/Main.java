@@ -4,21 +4,20 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
-import net.cbojar.reflacs.files.FilesCollector;
-import net.cbojar.reflacs.files.FilesDistributor;
 import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
 import net.cbojar.reflacs.storage.Source;
+import net.cbojar.reflacs.ui.UI;
+import net.cbojar.reflacs.ui.cli.CLI;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
-		final String sourceRoot = args[0];
-		final String destinationRoot = args[1];
+		final UI<Path> ui = CLI.fromArgs(args);
 
-		System.out.printf("Source: %s, Distributor: %s%n", sourceRoot, destinationRoot);
+		System.out.println(ui);
 
-		final Collector<Path> collector = FilesCollector.create(sourceRoot);
-		final Distributor<Path> distributor = FilesDistributor.to(destinationRoot);
+		final Collector<Path> collector = ui.collector();
+		final Distributor<Path> distributor = ui.distributor();
 		final FFMPEG converter = FFMPEG.of(distributor.format());
 
 		for (final Source<Path> flac : collector.collect()) {

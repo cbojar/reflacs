@@ -22,10 +22,6 @@ public final class FilesDistributor implements Distributor<Path> {
 		this.format = format;
 	}
 
-	public static Distributor<Path> to(final String destination) throws IOException {
-		return to(Path.of(destination));
-	}
-
 	public static Distributor<Path> to(final Path destination) throws IOException {
 		return new FilesDistributor(destination, Formats.withOptions(readOptions(destination)));
 	}

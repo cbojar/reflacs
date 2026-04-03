@@ -17,11 +17,7 @@ public final class FilesCollector implements Collector<Path> {
 		this.source = source;
 	}
 
-	public static Collector<Path> create(final String source) {
-		return create(Path.of(source));
-	}
-
-	public static Collector<Path> create(final Path source) {
+	public static Collector<Path> from(final Path source) {
 		return new FilesCollector(source);
 	}
 
