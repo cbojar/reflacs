@@ -29,14 +29,14 @@ public final class Main {
 		final FFMPEG converter = FFMPEG.of(format);
 
 		for (final Flac<Path> flac : collector.collect()) {
-			final MediaData convertedData = converter.convert(flac.data());
+			final MediaData<Path> convertedData = converter.convert(flac.data());
 			final Path convertedPath = configuration.mapToDestination(flac.key());
-			final Converted converted = Converted.of(convertedPath, convertedData);
+			final Converted<Path> converted = Converted.of(convertedPath, convertedData);
 			writeToDestination(converted);
 		}
 	}
 
-	private static void writeToDestination(final Converted converted) {
+	private static void writeToDestination(final Converted<Path> converted) {
 		System.out.println(converted);
 
 		try {

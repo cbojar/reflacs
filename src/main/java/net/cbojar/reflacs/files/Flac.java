@@ -3,36 +3,30 @@ package net.cbojar.reflacs.files;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class Flac<K> {
-	private final K key;
-	private final MediaData data;
+	private final MediaData<K> data;
 
-	private Flac(final K key, final MediaData data) {
-		this.key = key;
+	private Flac(final MediaData<K> data) {
 		this.data = data;
 	}
 
-	public static <K> Flac<K> of(final K key, final MediaData data) {
-		return new Flac<>(key, data);
+	public static <K> Flac<K> of(final MediaData<K> data) {
+		return new Flac<>(data);
 	}
 
 	public static <K> Flac<K> of(final K key, final byte[] data) {
-		return of(key, MediaData.flac(data));
-	}
-
-	public String name() {
-		return key.toString();
+		return of(MediaData.flac(key, data));
 	}
 
 	public K key() {
-		return key;
+		return data.key();
 	}
 
-	public MediaData data() {
+	public MediaData<K> data() {
 		return data;
 	}
 
 	@Override
 	public String toString() {
-		return key.toString();
+		return data.key().toString();
 	}
 }

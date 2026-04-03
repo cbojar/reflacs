@@ -4,17 +4,17 @@ import java.nio.file.Path;
 
 import net.cbojar.reflacs.media.MediaData;
 
-public class Converted {
+public class Converted<K> {
 	private final Path path;
-	private final MediaData data;
+	private final MediaData<K> data;
 
-	private Converted(final Path path, final MediaData data) {
+	private Converted(final Path path, final MediaData<K> data) {
 		this.path = path;
 		this.data = data;
 	}
 
-	public static Converted of(final Path path, final MediaData data) {
-		return new Converted(replaceFlacSuffix(path, data.type()), data);
+	public static <K> Converted<K> of(final Path path, final MediaData<K> data) {
+		return new Converted<>(replaceFlacSuffix(path, data.type()), data);
 	}
 
 	private static Path replaceFlacSuffix(final Path path, final String outputFormat) {

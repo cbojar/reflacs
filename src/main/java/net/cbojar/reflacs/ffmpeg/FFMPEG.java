@@ -17,7 +17,7 @@ public final class FFMPEG {
 		return new FFMPEG(format);
 	}
 
-	public MediaData convert(final MediaData flac) throws IOException {
+	public <K> MediaData<K> convert(final MediaData<K> flac) throws IOException {
 		final ByteArrayOutputStream convertedBytes = new ByteArrayOutputStream();
 
 		Run.start(Command.build(format)).withBlock(pipes -> {
@@ -25,6 +25,6 @@ public final class FFMPEG {
 			pipes.pipeOut(inputStream -> convertedBytes.write(inputStream.readAllBytes()));
 		});
 
-		return MediaData.of(format.format(), convertedBytes.toByteArray());
+		return MediaData.of(flac.key(), format.format(), convertedBytes.toByteArray());
 	}
 }
