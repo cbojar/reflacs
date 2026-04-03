@@ -10,7 +10,7 @@ public final class Options {
 		this.options = options;
 	}
 
-	static Options of(final Properties properties) {
+	public static Options of(final Properties properties) {
 		return new Options(properties);
 	}
 
