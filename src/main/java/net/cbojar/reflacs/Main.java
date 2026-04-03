@@ -11,8 +11,10 @@ import net.cbojar.reflacs.files.Collector;
 import net.cbojar.reflacs.files.Converted;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.Flac;
+import net.cbojar.reflacs.files.PathKeyMapper;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
+import net.cbojar.reflacs.media.KeyMapper;
 import net.cbojar.reflacs.media.MediaData;
 
 public final class Main {
@@ -26,12 +28,12 @@ public final class Main {
 
 		final Collector<Path> collector = FilesCollector.create(configuration);
 		final Format format = Formats.withOptions(configuration.options());
+		final KeyMapper<Path> keyMapper = PathKeyMapper.create(configuration.destination(), format);
 		final FFMPEG converter = FFMPEG.of(format);
 
 		for (final Flac<Path> flac : collector.collect()) {
 			final MediaData<Path> convertedData = converter.convert(flac.data());
-			final Path convertedPath = configuration.mapToDestination(flac.key(), format.extension());
-			final Converted<Path> converted = Converted.of(convertedPath, convertedData);
+			final Converted<Path> converted = Converted.of(keyMapper.map(flac.key()), convertedData);
 			writeToDestination(converted);
 		}
 	}

@@ -48,11 +48,6 @@ public final class Configuration {
 		return destination;
 	}
 
-	public Path mapToDestination(final Path path, final String suffix) {
-		final Path withSuffix = Path.of(String.format("%s.%s", path.toString(), suffix));
-		return destination.resolve(withSuffix);
-	}
-
 	public Options options() {
 		return options;
 	}
