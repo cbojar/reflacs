@@ -11,7 +11,7 @@ import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
 import net.cbojar.reflacs.formats.Options;
 import net.cbojar.reflacs.storage.Distributor;
-import net.cbojar.reflacs.storage.Media;
+import net.cbojar.reflacs.storage.Source;
 
 public final class FilesDistributor implements Distributor<Path> {
 	private final Path root;
@@ -51,7 +51,7 @@ public final class FilesDistributor implements Distributor<Path> {
 	}
 
 	@Override
-	public void distribute(final Media<Path> media) throws IOException {
+	public void distribute(final Source<Path> media) throws IOException {
 		final Path destination = root.resolve(String.format("%s.%s", media.key(), format.extension()));
 
 		Files.createDirectories(destination.getParent());

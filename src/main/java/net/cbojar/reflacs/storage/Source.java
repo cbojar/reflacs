@@ -3,17 +3,17 @@ package net.cbojar.reflacs.storage;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public final class Media<K> {
+public final class Source<K> {
 	private final K key;
 	private final byte[] data;
 
-	private Media(final K key, final byte[] data) {
+	private Source(final K key, final byte[] data) {
 		this.key = key;
 		this.data = data;
 	}
 
-	public static <K> Media<K> of(final K key, final byte[] data) {
-		return new Media<>(key, data);
+	public static <K> Source<K> of(final K key, final byte[] data) {
+		return new Source<>(key, data);
 	}
 
 	public K key() {

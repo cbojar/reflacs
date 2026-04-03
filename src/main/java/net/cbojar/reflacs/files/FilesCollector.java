@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import net.cbojar.reflacs.storage.Collector;
-import net.cbojar.reflacs.storage.Media;
+import net.cbojar.reflacs.storage.Source;
 
 public final class FilesCollector implements Collector<Path> {
 	private final Path source;
@@ -26,7 +26,7 @@ public final class FilesCollector implements Collector<Path> {
 	}
 
 	@Override
-	public Iterable<Media<Path>> collect() throws IOException {
+	public Iterable<Source<Path>> collect() throws IOException {
 		try (Stream<Path> stream = Files.find(source, 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FilesIterator(source, flacs.iterator());

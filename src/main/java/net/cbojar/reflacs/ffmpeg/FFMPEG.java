@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import net.cbojar.reflacs.formats.Format;
-import net.cbojar.reflacs.storage.Media;
+import net.cbojar.reflacs.storage.Source;
 
 public final class FFMPEG {
 	private final Format format;
@@ -17,7 +17,7 @@ public final class FFMPEG {
 		return new FFMPEG(format);
 	}
 
-	public <K> Media<K> convert(final Media<K> media) throws IOException {
+	public <K> Source<K> convert(final Source<K> media) throws IOException {
 		final ByteArrayOutputStream convertedBytes = new ByteArrayOutputStream();
 
 		Run.start(Command.build(format)).withBlock(pipes -> {
@@ -25,6 +25,6 @@ public final class FFMPEG {
 			pipes.pipeOut(inputStream -> convertedBytes.write(inputStream.readAllBytes()));
 		});
 
-		return Media.of(media.key(), convertedBytes.toByteArray());
+		return Source.of(media.key(), convertedBytes.toByteArray());
 	}
 }

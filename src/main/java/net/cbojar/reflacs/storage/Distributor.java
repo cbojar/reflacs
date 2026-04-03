@@ -6,5 +6,5 @@ import net.cbojar.reflacs.formats.Format;
 
 public interface Distributor<K> {
 	Format format();
-	void distribute(final Media<K> media) throws IOException;
+	void distribute(final Source<K> media) throws IOException;
 }

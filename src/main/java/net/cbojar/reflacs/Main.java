@@ -8,7 +8,7 @@ import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.FilesDistributor;
 import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
-import net.cbojar.reflacs.storage.Media;
+import net.cbojar.reflacs.storage.Source;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
@@ -21,7 +21,7 @@ public final class Main {
 		final Distributor<Path> distributor = FilesDistributor.to(destination);
 		final FFMPEG converter = FFMPEG.of(distributor.format());
 
-		for (final Media<Path> flac : collector.collect()) {
+		for (final Source<Path> flac : collector.collect()) {
 			distributor.distribute(converter.convert(flac));
 		}
 	}

@@ -7,9 +7,9 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.cbojar.reflacs.storage.Media;
+import net.cbojar.reflacs.storage.Source;
 
-class FilesIterator implements Iterator<Media<Path>> {
+class FilesIterator implements Iterator<Source<Path>> {
 	private final Path source;
 	private final Iterator<Path> flacs;
 
@@ -24,13 +24,13 @@ class FilesIterator implements Iterator<Media<Path>> {
 	}
 
 	@Override
-	public Media<Path> next() {
+	public Source<Path> next() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
 
 		final Path path = flacs.next();
-		return Media.of(toExternal(source, path), bytesFor(path));
+		return Source.of(toExternal(source, path), bytesFor(path));
 	}
 
 	private static Path toExternal(final Path source, final Path absolute) {
