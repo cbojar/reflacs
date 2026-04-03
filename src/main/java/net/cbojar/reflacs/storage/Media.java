@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.media;
+package net.cbojar.reflacs.storage;
 
 import java.io.IOException;
 import java.io.OutputStream;

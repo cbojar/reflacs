@@ -6,9 +6,9 @@ import java.nio.file.Path;
 import net.cbojar.reflacs.ffmpeg.FFMPEG;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.FilesDistributor;
-import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
+import net.cbojar.reflacs.storage.Media;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {

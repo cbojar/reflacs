@@ -10,8 +10,8 @@ import java.util.Properties;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.formats.Formats;
 import net.cbojar.reflacs.formats.Options;
-import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.storage.Distributor;
+import net.cbojar.reflacs.storage.Media;
 
 public final class FilesDistributor implements Distributor<Path> {
 	private final Path root;

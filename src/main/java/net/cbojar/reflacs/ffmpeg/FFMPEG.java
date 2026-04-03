@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import net.cbojar.reflacs.formats.Format;
-import net.cbojar.reflacs.media.Media;
+import net.cbojar.reflacs.storage.Media;
 
 public final class FFMPEG {
 	private final Format format;

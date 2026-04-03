@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.cbojar.reflacs.media.Media;
+import net.cbojar.reflacs.storage.Media;
 
 class FilesIterator implements Iterator<Media<Path>> {
 	private final Path source;

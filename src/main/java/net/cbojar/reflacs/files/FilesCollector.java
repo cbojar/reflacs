@@ -7,8 +7,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Stream;
 
-import net.cbojar.reflacs.media.Media;
 import net.cbojar.reflacs.storage.Collector;
+import net.cbojar.reflacs.storage.Media;
 
 public final class FilesCollector implements Collector<Path> {
 	private final Path source;
