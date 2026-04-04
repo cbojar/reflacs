@@ -5,8 +5,7 @@ import java.nio.file.Path;
 
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.FilesDistributor;
-import net.cbojar.reflacs.storage.Collector;
-import net.cbojar.reflacs.storage.Distributor;
+import net.cbojar.reflacs.ui.OnReady;
 import net.cbojar.reflacs.ui.UI;
 
 public final class CLI implements UI<Path> {
@@ -26,13 +25,8 @@ public final class CLI implements UI<Path> {
 	}
 
 	@Override
-	public Collector<Path> collector() {
-		return FilesCollector.from(sourceRoot);
-	}
-
-	@Override
-	public Distributor<Path> distributor() throws IOException {
-		return FilesDistributor.to(destinationRoot);
+	public void whenReady(final OnReady<Path> onReady) throws IOException {
+		onReady.ready(FilesCollector.from(sourceRoot), FilesDistributor.to(destinationRoot));
 	}
 
 	@Override
