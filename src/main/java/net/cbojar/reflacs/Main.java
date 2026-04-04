@@ -8,11 +8,11 @@ import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
 import net.cbojar.reflacs.storage.Source;
 import net.cbojar.reflacs.ui.UI;
-import net.cbojar.reflacs.ui.cli.CLI;
+import net.cbojar.reflacs.ui.gui.GUI;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
-		final UI<Path> ui = CLI.fromArgs(args);
+		final UI<Path> ui = GUI.show();
 
 		System.out.println(ui);
 
