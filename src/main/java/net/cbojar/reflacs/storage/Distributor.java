@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import net.cbojar.reflacs.formats.Format;
 
-public interface Distributor<K> {
+public interface Distributor {
 	Format format();
-	void distribute(final Destination<K> media) throws IOException;
+	void distribute(final Destination media) throws IOException;
 }

@@ -8,7 +8,7 @@ import net.cbojar.reflacs.files.FilesDistributor;
 import net.cbojar.reflacs.ui.OnReady;
 import net.cbojar.reflacs.ui.UI;
 
-public final class CLI implements UI<Path> {
+public final class CLI implements UI {
 	private final Path sourceRoot;
 	private final Path destinationRoot;
 
@@ -17,7 +17,7 @@ public final class CLI implements UI<Path> {
 		this.destinationRoot = destinationRoot;
 	}
 
-	public static UI<Path> fromArgs(final String... args) {
+	public static UI fromArgs(final String... args) {
 		final String sourceRoot = args[0];
 		final String destinationRoot = args[1];
 
@@ -25,7 +25,7 @@ public final class CLI implements UI<Path> {
 	}
 
 	@Override
-	public void whenReady(final OnReady<Path> onReady) throws IOException {
+	public void whenReady(final OnReady onReady) throws IOException {
 		onReady.ready(FilesCollector.from(sourceRoot), FilesDistributor.to(destinationRoot));
 	}
 

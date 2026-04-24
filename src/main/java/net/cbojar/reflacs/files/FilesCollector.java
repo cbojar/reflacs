@@ -10,19 +10,19 @@ import java.util.stream.Stream;
 import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Source;
 
-public final class FilesCollector implements Collector<Path> {
+public final class FilesCollector implements Collector {
 	private final Path source;
 
 	private FilesCollector(final Path source) {
 		this.source = source;
 	}
 
-	public static Collector<Path> from(final Path source) {
+	public static Collector from(final Path source) {
 		return new FilesCollector(source);
 	}
 
 	@Override
-	public Iterable<Source<Path>> collect() throws IOException {
+	public Iterable<Source> collect() throws IOException {
 		try (Stream<Path> stream = Files.find(source, 10, FilesCollector::isFlacFile)) {
 			final List<Path> flacs = stream.toList();
 			return () -> new FilesIterator(source, flacs.iterator());

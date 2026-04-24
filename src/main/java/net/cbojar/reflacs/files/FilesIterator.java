@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 
 import net.cbojar.reflacs.storage.Source;
 
-class FilesIterator implements Iterator<Source<Path>> {
+class FilesIterator implements Iterator<Source> {
 	private final Path source;
 	private final Iterator<Path> flacs;
 
@@ -24,7 +24,7 @@ class FilesIterator implements Iterator<Source<Path>> {
 	}
 
 	@Override
-	public Source<Path> next() {
+	public Source next() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}

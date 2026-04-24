@@ -13,7 +13,7 @@ import net.cbojar.reflacs.formats.Options;
 import net.cbojar.reflacs.storage.Destination;
 import net.cbojar.reflacs.storage.Distributor;
 
-public final class FilesDistributor implements Distributor<Path> {
+public final class FilesDistributor implements Distributor {
 	private final Path root;
 	private final Format format;
 
@@ -22,7 +22,7 @@ public final class FilesDistributor implements Distributor<Path> {
 		this.format = format;
 	}
 
-	public static Distributor<Path> to(final Path destination) throws IOException {
+	public static Distributor to(final Path destination) throws IOException {
 		return new FilesDistributor(destination, Formats.withOptions(readOptions(destination)));
 	}
 
@@ -47,7 +47,7 @@ public final class FilesDistributor implements Distributor<Path> {
 	}
 
 	@Override
-	public void distribute(final Destination<Path> media) throws IOException {
+	public void distribute(final Destination media) throws IOException {
 		final Path destination = root.resolve(String.format("%s.%s", media.key(), format.extension()));
 
 		Files.createDirectories(destination.getParent());

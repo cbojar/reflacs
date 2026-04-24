@@ -18,7 +18,7 @@ public final class FFMPEG {
 		return new FFMPEG(format);
 	}
 
-	public <K> Destination<K> convert(final Source<K> source) throws IOException {
+	public Destination convert(final Source source) throws IOException {
 		final AtomicReference<byte[]> bytesCaptor = new AtomicReference<>(new byte[0]);
 
 		Run.start(Command.build(format)).withBlock(pipes -> {

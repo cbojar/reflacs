@@ -2,21 +2,22 @@ package net.cbojar.reflacs.storage;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 
-public final class Source<K> {
-	private final K key;
+public final class Source {
+	private final Path key;
 	private final byte[] data;
 
-	private Source(final K key, final byte[] data) {
+	private Source(final Path key, final byte[] data) {
 		this.key = key;
 		this.data = data;
 	}
 
-	public static <K> Source<K> of(final K key, final byte[] data) {
-		return new Source<>(key, data);
+	public static Source of(final Path key, final byte[] data) {
+		return new Source(key, data);
 	}
 
-	public K key() {
+	public Path key() {
 		return key;
 	}
 
