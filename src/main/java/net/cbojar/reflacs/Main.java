@@ -15,11 +15,7 @@ import net.cbojar.reflacs.ui.gui.GUI;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
-		final UI ui = uiFrom(args, Main::ready);
-
-		System.out.println(ui);
-
-		ui.run();
+		uiFrom(args, Main::ready).run();
 	}
 
 	private static void ready(final Collector collector, final Distributor distributor) throws IOException {

@@ -26,12 +26,8 @@ public final class CLI implements UI {
 
 	@Override
 	public void run() throws IOException {
+		System.out.printf("Source: %s, Destination: %s%n", sourceRoot, destinationRoot);
 		onReady.ready(FilesCollector.from(sourceRoot), FilesDistributor.to(destinationRoot));
-	}
-
-	@Override
-	public String toString() {
-		return String.format("Source: %s, Destination: %s", sourceRoot, destinationRoot);
 	}
 
 	private static final class BuildTarget implements UIBuildTarget {
