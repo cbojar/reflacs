@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import javax.swing.JPanel;
@@ -26,7 +25,7 @@ final class FileTree implements AsComponent {
 		this.tree = tree;
 	}
 
-	public static FileTree create(final Consumer<Runnable> jobs) {
+	public static FileTree create(final JobManager jobs) {
 		final JPanel panel = new JPanel(new BorderLayout());
 		final PathChooser path = PathChooser.create(jobs);
 		final JTree tree = new JTree(new DefaultTreeModel(null));

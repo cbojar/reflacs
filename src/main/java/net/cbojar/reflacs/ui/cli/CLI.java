@@ -30,6 +30,11 @@ public final class CLI implements UI {
 		onReady.ready(FilesCollector.from(sourceRoot), FilesDistributor.to(destinationRoot));
 	}
 
+	@Override
+	public void close() {
+		// Do nothing
+	}
+
 	private static final class BuildTarget implements UIBuildTarget {
 		@Override
 		public UI build(final String[] args, final OnReady onReady) {

@@ -8,31 +8,30 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 final class MainWindow {
 	private final JFrame window;
+	private final JobManager jobs;
 	private final FileTree source;
 	private final FileTree destination;
 	private final JButton convertButton;
 	private final CompletableFuture<Void> future = new CompletableFuture<>();
 
-	private MainWindow(final JFrame window, final FileTree source, final FileTree destination, final JButton convertButton) {
+	private MainWindow(final JFrame window, final JobManager jobs, final FileTree source, final FileTree destination, final JButton convertButton) {
 		this.window = window;
+		this.jobs = jobs;
 		this.source = source;
 		this.destination = destination;
 		this.convertButton = convertButton;
 	}
 
-	public static MainWindow create(final Consumer<Runnable> jobs) {
+	public static MainWindow create(final JobManager jobs) {
 		final JFrame window = new JFrame();
 		window.setTitle("reflacs");
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -59,7 +58,7 @@ final class MainWindow {
 			}
 		});
 
-		final MainWindow mainWindow = new MainWindow(window, sourceTree, destinationTree, convertButton);
+		final MainWindow mainWindow = new MainWindow(window, jobs, sourceTree, destinationTree, convertButton);
 
 		convertButton.addActionListener(event -> mainWindow.readyToConvert());
 
@@ -67,7 +66,7 @@ final class MainWindow {
 	}
 
 	private void readyToConvert() {
-		convertButton.setEnabled(false);
+		jobs.runForUI(() -> convertButton.setEnabled(false));
 		future.complete(null);
 	}
 
@@ -84,7 +83,7 @@ final class MainWindow {
 	}
 
 	public void setVisible(final boolean visible) {
-		SwingUtilities.invokeLater(() -> window.setVisible(visible));
+		jobs.runForUI(() -> window.setVisible(visible));
 	}
 
 	public Path sourcePath() {

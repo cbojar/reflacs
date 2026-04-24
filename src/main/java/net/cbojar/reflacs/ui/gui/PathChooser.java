@@ -7,8 +7,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -17,18 +15,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 final class PathChooser {
-	private final Consumer<Runnable> jobs;
+	private final JobManager jobs;
 	private final JPanel panel;
 	private final JLabel text;
 	private final List<PathListener> listeners = new ArrayList<>();
 
-	private PathChooser(final Consumer<Runnable> jobs, final JPanel panel, final JLabel text) {
+	private PathChooser(final JobManager jobs, final JPanel panel, final JLabel text) {
 		this.jobs = jobs;
 		this.panel = panel;
 		this.text = text;
 	}
 
-	public static PathChooser create(final Consumer<Runnable> jobs) {
+	public static PathChooser create(final JobManager jobs) {
 		final JPanel panel = new JPanel(new BorderLayout());
 		final JLabel text = new JLabel("");
 		final JButton button = new JButton("Path...");
@@ -93,7 +91,7 @@ final class PathChooser {
 
 	private void fireListeners(final Path newPath) {
 		for (final PathListener listener : listeners) {
-			jobs.accept(() -> listener.pathChanged(newPath));
+			jobs.run(() -> listener.pathChanged(newPath));
 		}
 	}
 
