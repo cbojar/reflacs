@@ -40,6 +40,10 @@ final class FileTree implements AsComponent {
 		return fileTree;
 	}
 
+	public void addPathChangedListener(final PathListener listener) {
+		path.addListener(listener);
+	}
+
 	private void refresh(final Path newPath) {
 		try {
 			((DefaultTreeModel)tree.getModel()).setRoot(PathTreeNode.create(newPath, false, getChildren(newPath)));

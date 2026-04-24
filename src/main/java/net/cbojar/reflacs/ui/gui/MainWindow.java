@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JButton;
@@ -86,12 +85,12 @@ final class MainWindow {
 		jobs.runForUI(() -> window.setVisible(visible));
 	}
 
-	public Path sourcePath() {
-		return source.path();
+	public void addSourcePathChangedListener(final PathListener listener) {
+		source.addPathChangedListener(listener);
 	}
 
-	public Path destinationPath() {
-		return destination.path();
+	public void addDestinationPathChangedListener(final PathListener listener) {
+		destination.addPathChangedListener(listener);
 	}
 
 	public void ready() throws IOException {
