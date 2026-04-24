@@ -17,7 +17,7 @@ public final class GUI implements UI {
 	private final JobManager jobs;
 	private final OnReady onReady;
 
-	private GUI(
+	GUI(
 			final AtomicReference<Path> sourcePath,
 			final AtomicReference<Path> destinationPath,
 			final MainWindow window,
@@ -31,7 +31,7 @@ public final class GUI implements UI {
 	}
 
 	public static UIBuildTarget target() {
-		return new GUI.BuildTarget();
+		return new GUIBuildTarget();
 	}
 
 	@Override
@@ -44,22 +44,5 @@ public final class GUI implements UI {
 	@Override
 	public void close() {
 		jobs.close();
-	}
-
-	private static final class BuildTarget implements UIBuildTarget{
-		@Override
-		@SuppressWarnings("resource")
-		public UI build(final String[] args, final OnReady onReady) {
-			final AtomicReference<Path> sourcePath = new AtomicReference<>();
-			final AtomicReference<Path> destinationPath = new AtomicReference<>();
-			final JobManager jobs = JobManager.create();
-			final MainWindow window = MainWindow.create(jobs);
-			final GUI gui = new GUI(sourcePath, destinationPath, window, jobs, onReady);
-
-			window.addSourcePathChangedListener(sourcePath::set);
-			window.addDestinationPathChangedListener(destinationPath::set);
-
-			return gui;
-		}
 	}
 }
