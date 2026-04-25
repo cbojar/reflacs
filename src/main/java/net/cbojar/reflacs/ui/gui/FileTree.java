@@ -40,8 +40,9 @@ final class FileTree implements AsComponent {
 		return fileTree;
 	}
 
-	public void addPathChangedListener(final PathListener listener) {
+	public FileTree addPathChangedListener(final PathListener listener) {
 		path.addListener(listener);
+		return this;
 	}
 
 	private void refresh(final Path newPath) {

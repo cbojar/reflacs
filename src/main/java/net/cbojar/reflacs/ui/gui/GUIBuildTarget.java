@@ -1,10 +1,7 @@
 package net.cbojar.reflacs.ui.gui;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
-
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -22,14 +19,9 @@ final class GUIBuildTarget implements UIBuildTarget{
 		final JobManager jobs = JobManager.create();
 		final CompletableFuture<Void> await = new CompletableFuture<>();
 
-		final FileTree sourceTree = FileTree.create(jobs);
-		final FileTree destinationTree = FileTree.create(jobs);
-
-		final AtomicReference<Path> sourcePath = new AtomicReference<>();
-		final AtomicReference<Path> destinationPath = new AtomicReference<>();
-
-		sourceTree.addPathChangedListener(sourcePath::set);
-		destinationTree.addPathChangedListener(destinationPath::set);
+		final Paths paths = Paths.create();
+		final FileTree sourceTree = FileTree.create(jobs).addPathChangedListener(paths::updateSource);
+		final FileTree destinationTree = FileTree.create(jobs).addPathChangedListener(paths::updateDestination);
 
 		final JSplitPane split = createSplit(sourceTree, destinationTree);
 
@@ -44,7 +36,7 @@ final class GUIBuildTarget implements UIBuildTarget{
 		convertButton.addActionListener(event -> {
 			jobs.runForUI(() -> convertButton.setEnabled(false));
 			try {
-				onReady.ready(FilesCollector.from(sourcePath.get()), FilesDistributor.to(destinationPath.get()));
+				onReady.ready(FilesCollector.from(paths.source()), FilesDistributor.to(paths.destination()));
 			} catch (final IOException ex) {
 				ex.printStackTrace(); // TODO Fix error handling
 			}
