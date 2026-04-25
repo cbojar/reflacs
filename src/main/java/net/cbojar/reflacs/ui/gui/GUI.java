@@ -1,33 +1,20 @@
 package net.cbojar.reflacs.ui.gui;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.concurrent.atomic.AtomicReference;
-
-import net.cbojar.reflacs.files.FilesCollector;
-import net.cbojar.reflacs.files.FilesDistributor;
-import net.cbojar.reflacs.ui.OnReady;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import net.cbojar.reflacs.ui.UI;
 import net.cbojar.reflacs.ui.UIBuildTarget;
 
 public final class GUI implements UI {
-	private final AtomicReference<Path> sourcePath;
-	private final AtomicReference<Path> destinationPath;
 	private final MainWindow window;
 	private final JobManager jobs;
-	private final OnReady onReady;
+	private final CompletableFuture<Void> await;
 
-	GUI(
-			final AtomicReference<Path> sourcePath,
-			final AtomicReference<Path> destinationPath,
-			final MainWindow window,
-			final JobManager jobs,
-			final OnReady onReady) {
-		this.sourcePath = sourcePath;
-		this.destinationPath = destinationPath;
+	GUI(final MainWindow window,final JobManager jobs, final CompletableFuture<Void> await) {
 		this.window = window;
 		this.jobs = jobs;
-		this.onReady = onReady;
+		this.await = await;
 	}
 
 	public static UIBuildTarget target() {
@@ -36,9 +23,16 @@ public final class GUI implements UI {
 
 	@Override
 	public void run() throws IOException {
-		window.setVisible(true);
-		window.ready();
-		onReady.ready(FilesCollector.from(sourcePath.get()), FilesDistributor.to(destinationPath.get()));
+		jobs.runForUI(() -> window.setVisible(true));
+		await();
+	}
+
+	private void await() throws IOException {
+		try {
+			await.get();
+		} catch (final InterruptedException | ExecutionException ex) {
+			throw new IOException(ex);
+		}
 	}
 
 	@Override
