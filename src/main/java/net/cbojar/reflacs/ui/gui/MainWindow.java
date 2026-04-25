@@ -39,10 +39,6 @@ final class MainWindow {
 		window.add(asComponent.asComponent(), BorderLayout.SOUTH);
 	}
 
-	public void addSouth(final Component component) {
-		window.add(component, BorderLayout.SOUTH);
-	}
-
 	public void addOpenListener(final Consumer<WindowEvent> listener) {
 		window.addWindowListener(new WindowAdapter() {
 			@Override

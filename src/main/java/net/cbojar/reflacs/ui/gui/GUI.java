@@ -11,7 +11,7 @@ public final class GUI implements UI {
 	private final JobManager jobs;
 	private final CompletableFuture<Void> await;
 
-	GUI(final MainWindow window,final JobManager jobs, final CompletableFuture<Void> await) {
+	GUI(final MainWindow window, final JobManager jobs, final CompletableFuture<Void> await) {
 		this.window = window;
 		this.jobs = jobs;
 		this.await = await;

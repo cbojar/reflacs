@@ -2,7 +2,6 @@ package net.cbojar.reflacs.ui.gui;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
@@ -29,19 +28,16 @@ final class GUIBuildTarget implements UIBuildTarget{
 
 		window.addCenter(split);
 
-		final JButton convertButton = new JButton("Convert");
+		final ConvertControls convert = ConvertControls.create(jobs)
+			.addConvertListener(() -> {
+				try {
+					onReady.ready(FilesCollector.from(paths.source()), FilesDistributor.to(paths.destination()));
+				} catch (final IOException ex) {
+					ex.printStackTrace(); // TODO Fix error handling
+				}
+			});
 
-		window.addSouth(convertButton);
-
-		convertButton.addActionListener(event -> {
-			jobs.runForUI(() -> convertButton.setEnabled(false));
-			try {
-				onReady.ready(FilesCollector.from(paths.source()), FilesDistributor.to(paths.destination()));
-			} catch (final IOException ex) {
-				ex.printStackTrace(); // TODO Fix error handling
-			}
-			jobs.runForUI(() -> convertButton.setEnabled(true));
-		});
+		window.addSouth(convert);
 
 		window.addOpenListener(event -> split.setDividerLocation(0.5));
 		window.addCloseListener(event -> await.complete(null));
