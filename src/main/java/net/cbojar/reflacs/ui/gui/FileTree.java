@@ -67,10 +67,6 @@ final class FileTree implements AsComponent {
 		}
 	}
 
-	public Path path() {
-		return path.path();
-	}
-
 	@Override
 	public Component asComponent() {
 		return panel;
