@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-final class PathChooser {
+final class PathChooser implements AsComponent {
 	private final JobManager jobs;
 	private final JPanel panel;
 	private final JLabel text;
@@ -95,6 +95,7 @@ final class PathChooser {
 		}
 	}
 
+	@Override
 	public Component asComponent() {
 		return panel;
 	}
