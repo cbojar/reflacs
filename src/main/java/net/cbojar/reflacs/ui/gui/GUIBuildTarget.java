@@ -18,7 +18,9 @@ final class GUIBuildTarget implements UIBuildTarget{
 		final MainWindow window = MainWindow.create();
 
 		final Paths paths = Paths.create();
-		final FileSelector selector = FileSelector.create(jobs, paths);
+		final FileSelector selector = FileSelector.create(jobs)
+			.addSourcePathChangedListener(paths::updateSource)
+			.addDestinationPathChangedListener(paths::updateDestination);
 
 		window.addFileSelector(selector);
 
