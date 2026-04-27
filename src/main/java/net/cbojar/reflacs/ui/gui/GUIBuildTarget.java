@@ -20,7 +20,7 @@ final class GUIBuildTarget implements UIBuildTarget{
 		final Paths paths = Paths.create();
 		final FileSelector selector = FileSelector.create(jobs, paths);
 
-		window.addCenter(selector);
+		window.addFileSelector(selector);
 
 		final ConvertControls convert = ConvertControls.create(jobs)
 			.addConvertListener(() -> {
@@ -31,7 +31,7 @@ final class GUIBuildTarget implements UIBuildTarget{
 				}
 			});
 
-		window.addSouth(convert);
+		window.addConvertControls(convert);
 
 		window.addOpenListener(event -> selector.ensureLayout());
 		window.addCloseListener(event -> await.complete(null));

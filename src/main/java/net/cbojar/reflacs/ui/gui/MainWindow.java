@@ -26,12 +26,12 @@ final class MainWindow {
 		return new MainWindow(window);
 	}
 
-	public void addCenter(final AsComponent asComponent) {
-		window.add(asComponent.asComponent(), BorderLayout.CENTER);
+	public void addFileSelector(final FileSelector selector) {
+		window.add(selector.asComponent(), BorderLayout.CENTER);
 	}
 
-	public void addSouth(final AsComponent asComponent) {
-		window.add(asComponent.asComponent(), BorderLayout.SOUTH);
+	public void addConvertControls(final ConvertControls controls) {
+		window.add(controls.asComponent(), BorderLayout.SOUTH);
 	}
 
 	public void addOpenListener(final Consumer<WindowEvent> listener) {
