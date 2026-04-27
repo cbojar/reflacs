@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
-final class FileTree implements AsComponent {
+final class FileTree {
 	private final JPanel panel;
 	private final PathChooser path;
 	private final JTree tree;
@@ -67,7 +67,6 @@ final class FileTree implements AsComponent {
 		}
 	}
 
-	@Override
 	public Component asComponent() {
 		return panel;
 	}

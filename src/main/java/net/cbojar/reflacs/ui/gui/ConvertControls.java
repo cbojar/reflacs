@@ -3,7 +3,7 @@ package net.cbojar.reflacs.ui.gui;
 import java.awt.Component;
 import javax.swing.JButton;
 
-final class ConvertControls implements AsComponent {
+final class ConvertControls {
 	private final JobManager jobs;
 	private final JButton button;
 
@@ -29,7 +29,6 @@ final class ConvertControls implements AsComponent {
 		return this;
 	}
 
-	@Override
 	public Component asComponent() {
 		return button;
 	}

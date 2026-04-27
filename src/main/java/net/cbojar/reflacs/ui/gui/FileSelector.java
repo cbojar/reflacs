@@ -5,7 +5,7 @@ import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-final class FileSelector implements AsComponent {
+final class FileSelector {
 	private final JSplitPane split;
 	private final FileTree source;
 	private final FileTree destination;
@@ -49,7 +49,6 @@ final class FileSelector implements AsComponent {
 		split.setDividerLocation(0.5);
 	}
 
-	@Override
 	public Component asComponent() {
 		return split;
 	}
