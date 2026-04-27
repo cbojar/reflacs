@@ -26,34 +26,46 @@ final class MainWindow {
 		return new MainWindow(window);
 	}
 
-	public void addFileSelector(final FileSelector selector) {
+	public MainWindow addMessages(final Messages messages) {
+		window.add(messages.asComponent(), BorderLayout.NORTH);
+		return this;
+	}
+
+	public MainWindow addFileSelector(final FileSelector selector) {
 		window.add(selector.asComponent(), BorderLayout.CENTER);
+		return this;
 	}
 
-	public void addConvertControls(final ConvertControls controls) {
+	public MainWindow addConvertControls(final ConvertControls controls) {
 		window.add(controls.asComponent(), BorderLayout.SOUTH);
+		return this;
 	}
 
-	public void addOpenListener(final Consumer<WindowEvent> listener) {
+	public MainWindow addOpenListener(final Consumer<WindowEvent> listener) {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(final WindowEvent event) {
 				listener.accept(event);
 			}
 		});
+
+		return this;
 	}
 
-	public void addCloseListener(final Consumer<WindowEvent> listener) {
+	public MainWindow addCloseListener(final Consumer<WindowEvent> listener) {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(final WindowEvent event) {
 				listener.accept(event);
 			}
 		});
+
+		return this;
 	}
 
-	public void pack() {
+	public MainWindow pack() {
 		window.pack();
+		return this;
 	}
 
 	public void setVisible(final boolean visible) {

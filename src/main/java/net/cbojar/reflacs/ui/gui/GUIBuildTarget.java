@@ -1,6 +1,5 @@
 package net.cbojar.reflacs.ui.gui;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import net.cbojar.reflacs.files.FilesCollector;
 import net.cbojar.reflacs.files.FilesDistributor;
@@ -15,30 +14,24 @@ final class GUIBuildTarget implements UIBuildTarget{
 		final JobManager jobs = JobManager.create();
 		final CompletableFuture<Void> await = new CompletableFuture<>();
 
-		final MainWindow window = MainWindow.create();
+		final Messages messages = Messages.create(jobs);
 
 		final Paths paths = Paths.create();
-		final FileSelector selector = FileSelector.create(jobs)
+		final FileSelector selector = FileSelector.create(jobs, messages)
 			.addSourcePathChangedListener(paths::updateSource)
 			.addDestinationPathChangedListener(paths::updateDestination);
 
-		window.addFileSelector(selector);
-
 		final ConvertControls convert = ConvertControls.create(jobs)
-			.addConvertListener(() -> {
-				try {
-					onReady.ready(FilesCollector.from(paths.source()), FilesDistributor.to(paths.destination()));
-				} catch (final IOException ex) {
-					ex.printStackTrace(); // TODO Fix error handling
-				}
-			});
+			.addConvertListener(() ->messages.reportErrors(() -> onReady.ready(
+				FilesCollector.from(paths.source()), FilesDistributor.to(paths.destination()))));
 
-		window.addConvertControls(convert);
-
-		window.addOpenListener(event -> selector.ensureLayout());
-		window.addCloseListener(event -> await.complete(null));
-
-		window.pack();
+		final MainWindow window = MainWindow.create()
+			.addMessages(messages)
+			.addFileSelector(selector)
+			.addConvertControls(convert)
+			.addOpenListener(event -> selector.ensureLayout())
+			.addCloseListener(event -> await.complete(null))
+			.pack();
 
 		return new GUI(window, jobs, await);
 	}

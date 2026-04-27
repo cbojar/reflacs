@@ -16,9 +16,9 @@ final class FileSelector {
 		this.destination = destination;
 	}
 
-	public static FileSelector create(final JobManager jobs) {
-		final FileTree sourceTree = FileTree.create(jobs);
-		final FileTree destinationTree = FileTree.create(jobs);
+	public static FileSelector create(final JobManager jobs, final Messages messages) {
+		final FileTree sourceTree = FileTree.create(jobs, messages);
+		final FileTree destinationTree = FileTree.create(jobs, messages);
 
 		return new FileSelector(createSplit(sourceTree, destinationTree), sourceTree, destinationTree);
 	}

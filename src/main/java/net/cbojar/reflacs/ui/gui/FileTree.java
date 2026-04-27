@@ -15,25 +15,27 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
 final class FileTree {
+	private final Messages messages;
 	private final JPanel panel;
 	private final PathChooser path;
 	private final JTree tree;
 
-	private FileTree(final JPanel panel, final PathChooser path, final JTree tree) {
+	private FileTree(final Messages messages, final JPanel panel, final PathChooser path, final JTree tree) {
+		this.messages = messages;
 		this.panel = panel;
 		this.path = path;
 		this.tree = tree;
 	}
 
-	public static FileTree create(final JobManager jobs) {
+	public static FileTree create(final JobManager jobs, final Messages messages) {
 		final JPanel panel = new JPanel(new BorderLayout());
-		final PathChooser path = PathChooser.create(jobs);
+		final PathChooser path = PathChooser.create(jobs, messages);
 		final JTree tree = new JTree(new DefaultTreeModel(null));
 
 		panel.add(path.asComponent(), BorderLayout.NORTH);
 		panel.add(tree, BorderLayout.CENTER);
 
-		final FileTree fileTree = new FileTree(panel, path, tree);
+		final FileTree fileTree = new FileTree(messages, panel, path, tree);
 
 		path.addListener(fileTree::refresh);
 
@@ -46,11 +48,9 @@ final class FileTree {
 	}
 
 	private void refresh(final Path newPath) {
-		try {
-			((DefaultTreeModel)tree.getModel()).setRoot(PathTreeNode.create(newPath, false, getChildren(newPath)));
-		} catch (final UncheckedIOException ex) {
-			ex.printStackTrace(); // TODO: make better
-		}
+		messages.reportErrors(() ->
+			((DefaultTreeModel)tree.getModel())
+				.setRoot(PathTreeNode.create(newPath, false, getChildren(newPath))));
 	}
 
 	private static List<PathTreeNode> getChildren(final Path path) {
