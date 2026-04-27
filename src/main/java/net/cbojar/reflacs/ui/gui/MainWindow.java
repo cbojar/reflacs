@@ -1,7 +1,6 @@
 package net.cbojar.reflacs.ui.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -29,10 +28,6 @@ final class MainWindow {
 
 	public void addCenter(final AsComponent asComponent) {
 		window.add(asComponent.asComponent(), BorderLayout.CENTER);
-	}
-
-	public void addCenter(final Component component) {
-		window.add(component, BorderLayout.CENTER);
 	}
 
 	public void addSouth(final AsComponent asComponent) {
