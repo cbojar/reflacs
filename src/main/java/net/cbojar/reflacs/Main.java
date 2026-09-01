@@ -3,7 +3,8 @@ package net.cbojar.reflacs;
 import java.io.IOException;
 import java.util.Arrays;
 
-import net.cbojar.reflacs.ffmpeg.FFMPEG;
+import net.cbojar.reflacs.converter.Converter;
+import net.cbojar.reflacs.converter.ffmpeg.FFMPEG;
 import net.cbojar.reflacs.storage.Collector;
 import net.cbojar.reflacs.storage.Distributor;
 import net.cbojar.reflacs.storage.Source;
@@ -21,7 +22,7 @@ public final class Main {
 	}
 
 	private static void ready(final Collector collector, final Distributor distributor) throws IOException {
-		final FFMPEG converter = FFMPEG.of(distributor.format());
+		final Converter converter = FFMPEG.of(distributor.format());
 
 		for (final Source flac : collector.collect()) {
 			distributor.distribute(converter.convert(flac));

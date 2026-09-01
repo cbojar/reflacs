@@ -1,13 +1,14 @@
-package net.cbojar.reflacs.ffmpeg;
+package net.cbojar.reflacs.converter.ffmpeg;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.cbojar.reflacs.converter.Converter;
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.storage.Destination;
 import net.cbojar.reflacs.storage.Source;
 
-public final class FFMPEG {
+public final class FFMPEG implements Converter {
 	private final Format format;
 
 	private FFMPEG(final Format format) {
@@ -18,6 +19,7 @@ public final class FFMPEG {
 		return new FFMPEG(format);
 	}
 
+	@Override
 	public Destination convert(final Source source) throws IOException {
 		final AtomicReference<byte[]> bytesCaptor = new AtomicReference<>(new byte[0]);
 
