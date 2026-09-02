@@ -37,4 +37,11 @@ final class Ogg implements Format {
 	public Optional<String> bitrate() {
 		return options.get("bitrate");
 	}
+
+	@Override
+	public String toString() {
+		return String.format(
+			"Format: %s; Extension: .%s; Codec: %s; Quality: %s; Bitrate: %s",
+			format(), extension(), codec(), quality(), bitrate());
+	}
 }

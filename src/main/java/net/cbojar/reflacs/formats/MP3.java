@@ -37,4 +37,11 @@ final class MP3 implements Format {
 	public Optional<String> bitrate() {
 		return options.get("bitrate");
 	}
+
+	@Override
+	public String toString() {
+		return String.format(
+			"Format: %s; Extension: .%s; Quality: %s; Bitrate: %s",
+			format(), extension(), quality(), bitrate());
+	}
 }
