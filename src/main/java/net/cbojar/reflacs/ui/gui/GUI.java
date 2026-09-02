@@ -3,8 +3,8 @@ package net.cbojar.reflacs.ui.gui;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import net.cbojar.reflacs.transform.Transform;
 import net.cbojar.reflacs.ui.UI;
-import net.cbojar.reflacs.ui.UIBuildTarget;
 
 public final class GUI implements UI {
 	private final MainWindow window;
@@ -17,8 +17,16 @@ public final class GUI implements UI {
 		this.await = await;
 	}
 
-	public static UIBuildTarget target() {
-		return new GUIBuildTarget();
+	@SuppressWarnings("resource")
+	public static UI build(final Transform transform) {
+		final JobManager jobs = JobManager.create();
+		final CompletableFuture<Void> await = new CompletableFuture<>();
+
+		final MainWindow window = MainWindow.create(jobs, transform)
+			.addCloseListener(event -> await.complete(null))
+			.pack();
+
+		return new GUI(window, jobs, await);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.converter.ffmpeg;
+package net.cbojar.reflacs.ffmpeg;
 
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;

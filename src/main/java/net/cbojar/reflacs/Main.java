@@ -1,50 +1,35 @@
 package net.cbojar.reflacs;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
-import net.cbojar.reflacs.converter.Converter;
-import net.cbojar.reflacs.converter.ffmpeg.FFMPEG;
-import net.cbojar.reflacs.storage.Collector;
-import net.cbojar.reflacs.storage.Distributor;
-import net.cbojar.reflacs.storage.Source;
-import net.cbojar.reflacs.ui.OnReady;
+import net.cbojar.reflacs.ffmpeg.FFMPEG;
 import net.cbojar.reflacs.ui.UI;
-import net.cbojar.reflacs.ui.UIBuilder;
 import net.cbojar.reflacs.ui.cli.CLI;
 import net.cbojar.reflacs.ui.gui.GUI;
 
 public final class Main {
 	public static void main(final String... args) throws IOException {
-		try (UI ui = uiFrom(args, Main::ready)) {
+		try (UI ui = uiFrom(List.of(args))) {
 			ui.run();
 		}
 	}
 
-	private static void ready(final Collector collector, final Distributor distributor) throws IOException {
-		final Converter converter = FFMPEG.of(distributor.format());
-
-		for (final Source flac : collector.collect()) {
-			distributor.distribute(converter.convert(flac));
-		}
-	}
-
-	private static UI uiFrom(final String[] args, final OnReady onReady) throws IOException {
-		if (args.length < 1) {
+	private static UI uiFrom(final List<String> args) throws IOException {
+		if (args.isEmpty()) {
 			throw new IOException("UI mode required as first argument");
 		}
 
-		final String arg = args[0];
-		final String[] rest = Arrays.copyOfRange(args, 1, args.length);
-		final UIBuilder builder = UI.build().args(rest).onReady(onReady);
+		final String uiMode = args.get(0);
+		final FFMPEG transform = FFMPEG.instance();
 
-		switch (arg) {
+		switch (uiMode) {
 			case "cli":
-				return builder.buildInto(CLI.target());
+				return CLI.build(transform, args.subList(1, args.size()));
 			case "gui":
-				return builder.buildInto(GUI.target());
+				return GUI.build(transform);
 			default:
-				throw new IOException("Unknown UI mode: " + arg);
+				throw new IOException("Unknown UI mode: " + uiMode);
 		}
 	}
 }

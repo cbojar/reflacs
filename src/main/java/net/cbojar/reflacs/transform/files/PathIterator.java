@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.files;
+package net.cbojar.reflacs.transform.files;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -7,14 +7,14 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.cbojar.reflacs.storage.Source;
+import net.cbojar.reflacs.transform.Input;
 
-class PathIterator implements Iterator<Source> {
-	private final Path source;
+class PathIterator implements Iterator<Input> {
+	private final Path root;
 	private final Iterator<Path> flacs;
 
-	public PathIterator(final Path source, final Iterator<Path> flacs) {
-		this.source = source;
+	public PathIterator(final Path root, final Iterator<Path> flacs) {
+		this.root = root;
 		this.flacs = flacs;
 	}
 
@@ -24,13 +24,13 @@ class PathIterator implements Iterator<Source> {
 	}
 
 	@Override
-	public Source next() {
+	public Input next() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
 
 		final Path path = flacs.next();
-		return Source.of(toExternal(source, path), bytesFor(path));
+		return Input.of(toExternal(root, path), bytesFor(path));
 	}
 
 	private static Path toExternal(final Path source, final Path absolute) {
