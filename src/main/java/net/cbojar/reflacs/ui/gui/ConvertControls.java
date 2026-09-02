@@ -1,35 +1,56 @@
 package net.cbojar.reflacs.ui.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 
 final class ConvertControls {
-	private final JobManager jobs;
-	private final JButton button;
+	private final List<Runnable> listeners;
+	private final JPanel controls;
 
-	private ConvertControls(final JobManager jobs, final JButton button) {
-		this.jobs = jobs;
-		this.button = button;
+	private ConvertControls(final List<Runnable> listeners, final JPanel controls) {
+		this.listeners = listeners;
+		this.controls = controls;
 	}
 
-	public static ConvertControls create(final JobManager jobs) {
-		final JButton convertButton = new JButton("Convert");
-		return new ConvertControls(jobs, convertButton);
-	}
+	public static ConvertControls create(final JobManager jobs, final ConvertOptions options) {
+		final JPanel panel = new JPanel(new BorderLayout());
+		final JCheckBox overwriteExisting = new JCheckBox("Overwrite exisitng", options.overwrite());
+		final JButton button = new JButton("Convert");
 
-	public ConvertControls addConvertListener(final Runnable listener) {
+		panel.add(overwriteExisting, BorderLayout.CENTER);
+		panel.add(button, BorderLayout.SOUTH);
+
+		overwriteExisting.setEnabled(false);
+		overwriteExisting.addItemListener(event -> {
+			options.overwrite(event.getStateChange() == ItemEvent.SELECTED);
+		});
+
+		final List<Runnable> convertListeners = new ArrayList<>();
+
 		button.addActionListener(event -> {
 			jobs.runForUI(() -> button.setEnabled(false));
 			jobs.run(() -> {
-				listener.run();
+				convertListeners.forEach(Runnable::run);
 				jobs.runForUI(() -> button.setEnabled(true));
 			});
 		});
 
+		return new ConvertControls(convertListeners, panel);
+	}
+
+	public ConvertControls addConvertListener(final Runnable listener) {
+		listeners.add(listener);
 		return this;
 	}
 
 	public Component asComponent() {
-		return button;
+		return controls;
 	}
 }

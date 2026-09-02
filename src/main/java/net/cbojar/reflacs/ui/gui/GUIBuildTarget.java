@@ -17,11 +17,13 @@ final class GUIBuildTarget implements UIBuildTarget{
 		final Messages messages = Messages.create(jobs);
 
 		final Paths paths = Paths.create();
+		final ConvertOptions convertOptions = ConvertOptions.create();
+
 		final FileSelector selector = FileSelector.create(jobs, messages)
 			.addSourcePathChangedListener(paths::updateSource)
 			.addDestinationPathChangedListener(paths::updateDestination);
 
-		final ConvertControls convert = ConvertControls.create(jobs)
+		final ConvertControls convert = ConvertControls.create(jobs, convertOptions)
 			.addConvertListener(() -> messages.reportErrors(() -> onReady.ready(
 				PathCollector.from(paths.source()), PathDistributor.to(paths.destination()))));
 
