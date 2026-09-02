@@ -9,11 +9,11 @@ import java.util.NoSuchElementException;
 
 import net.cbojar.reflacs.storage.Source;
 
-class FilesIterator implements Iterator<Source> {
+class PathIterator implements Iterator<Source> {
 	private final Path source;
 	private final Iterator<Path> flacs;
 
-	public FilesIterator(final Path source, final Iterator<Path> flacs) {
+	public PathIterator(final Path source, final Iterator<Path> flacs) {
 		this.source = source;
 		this.flacs = flacs;
 	}

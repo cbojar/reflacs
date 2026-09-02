@@ -3,8 +3,8 @@ package net.cbojar.reflacs.ui.cli;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import net.cbojar.reflacs.files.FilesCollector;
-import net.cbojar.reflacs.files.FilesDistributor;
+import net.cbojar.reflacs.files.PathCollector;
+import net.cbojar.reflacs.files.PathDistributor;
 import net.cbojar.reflacs.ui.OnReady;
 import net.cbojar.reflacs.ui.UI;
 import net.cbojar.reflacs.ui.UIBuildTarget;
@@ -27,7 +27,7 @@ public final class CLI implements UI {
 	@Override
 	public void run() throws IOException {
 		System.out.printf("Source: %s, Destination: %s%n", sourceRoot, destinationRoot);
-		onReady.ready(FilesCollector.from(sourceRoot), FilesDistributor.to(destinationRoot));
+		onReady.ready(PathCollector.from(sourceRoot), PathDistributor.to(destinationRoot));
 	}
 
 	@Override

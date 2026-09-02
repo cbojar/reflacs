@@ -13,17 +13,17 @@ import net.cbojar.reflacs.formats.Options;
 import net.cbojar.reflacs.storage.Destination;
 import net.cbojar.reflacs.storage.Distributor;
 
-public final class FilesDistributor implements Distributor {
+public final class PathDistributor implements Distributor {
 	private final Path root;
 	private final Format format;
 
-	private FilesDistributor(final Path root, final Format format) {
+	private PathDistributor(final Path root, final Format format) {
 		this.root = root;
 		this.format = format;
 	}
 
 	public static Distributor to(final Path destination) throws IOException {
-		return new FilesDistributor(destination, Formats.withOptions(readOptions(destination)));
+		return new PathDistributor(destination, Formats.withOptions(readOptions(destination)));
 	}
 
 	private static Options readOptions(final Path destination) throws IOException {
