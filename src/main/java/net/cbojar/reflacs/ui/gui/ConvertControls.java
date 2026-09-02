@@ -5,16 +5,17 @@ import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 final class ConvertControls {
-	private final List<Runnable> listeners;
+	private final List<Consumer<ConvertOptions>> listeners;
 	private final JPanel controls;
 
-	private ConvertControls(final List<Runnable> listeners, final JPanel controls) {
+	private ConvertControls(final List<Consumer<ConvertOptions>> listeners, final JPanel controls) {
 		this.listeners = listeners;
 		this.controls = controls;
 	}
@@ -32,12 +33,12 @@ final class ConvertControls {
 			options.overwrite(event.getStateChange() == ItemEvent.SELECTED);
 		});
 
-		final List<Runnable> convertListeners = new ArrayList<>();
+		final List<Consumer<ConvertOptions>> convertListeners = new ArrayList<>();
 
 		button.addActionListener(event -> {
 			jobs.runForUI(() -> button.setEnabled(false));
 			jobs.run(() -> {
-				convertListeners.forEach(Runnable::run);
+				convertListeners.forEach(l -> l.accept(options));
 				jobs.runForUI(() -> button.setEnabled(true));
 			});
 		});
@@ -45,7 +46,7 @@ final class ConvertControls {
 		return new ConvertControls(convertListeners, panel);
 	}
 
-	public ConvertControls addConvertListener(final Runnable listener) {
+	public ConvertControls addConvertListener(final Consumer<ConvertOptions> listener) {
 		listeners.add(listener);
 		return this;
 	}

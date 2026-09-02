@@ -1,6 +1,7 @@
 package net.cbojar.reflacs.ui.gui;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import net.cbojar.reflacs.files.PathCollector;
 import net.cbojar.reflacs.files.PathDistributor;
 import net.cbojar.reflacs.ui.OnReady;
@@ -24,8 +25,7 @@ final class GUIBuildTarget implements UIBuildTarget{
 			.addDestinationPathChangedListener(paths::updateDestination);
 
 		final ConvertControls convert = ConvertControls.create(jobs, convertOptions)
-			.addConvertListener(() -> messages.reportErrors(() -> onReady.ready(
-				PathCollector.from(paths.source()), PathDistributor.to(paths.destination()))));
+			.addConvertListener(runOnReady(messages, paths, onReady));
 
 		final MainWindow window = MainWindow.create()
 			.addMessages(messages)
@@ -36,5 +36,11 @@ final class GUIBuildTarget implements UIBuildTarget{
 			.pack();
 
 		return new GUI(window, jobs, await);
+	}
+
+	private static Consumer<ConvertOptions> runOnReady(final Messages messages, final Paths paths, final OnReady onReady) {
+		return options ->
+			messages.reportErrors(() ->
+				onReady.ready(PathCollector.from(paths.source()), PathDistributor.to(paths.destination())));
 	}
 }
