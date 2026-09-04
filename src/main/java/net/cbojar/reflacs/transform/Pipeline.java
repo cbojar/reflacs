@@ -9,9 +9,14 @@ public final class Pipeline {
 	private final Destination destination;
 	private final Format format;
 	private final Renamer renamer;
-	private final Iterable<IncludeFilter> includeFilters;
+	private final Iterable<Filter> includeFilters;
 
-	Pipeline(final Source source, final Destination destination, final Format format, final Renamer renamer, final Iterable<IncludeFilter> includeFilters) {
+	Pipeline(
+			final Source source,
+			final Destination destination,
+			final Format format,
+			final Renamer renamer,
+			final Iterable<Filter> includeFilters) {
 		this.source = source;
 		this.destination = destination;
 		this.format = format;
@@ -41,8 +46,8 @@ public final class Pipeline {
 	private boolean include(final Path inputName, final Path outputName) throws IOException {
 		final Filterables filterables = new Filterables(inputName, outputName, format);
 
-		for (final IncludeFilter filter : includeFilters) {
-			if (!filter.include(filterables)) {
+		for (final Filter filter : includeFilters) {
+			if (!filter.test(filterables)) {
 				return false;
 			}
 		}

@@ -59,9 +59,10 @@ final class MainWindow {
 				final Format format = destination.readFormat();
 
 				Pipeline.build()
-					.withSource(source)
-					.withDestination(destination)
-					.withFormat(format)
+					.source(source)
+					.destination(destination)
+					.format(format)
+					.excludeIf(!options.overwrite(), filterables -> destination.exists(filterables.output()))
 					.finish()
 					.transform(transform);
 			});

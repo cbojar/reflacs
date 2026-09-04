@@ -42,9 +42,9 @@ public final class CLI implements UI {
 		final Format format = destination.readFormat();
 
 		Pipeline.build()
-			.withSource(source)
-			.withDestination(destination)
-			.withFormat(format)
+			.source(source)
+			.destination(destination)
+			.format(format)
 			.finish()
 			.transform(transform);
 	}

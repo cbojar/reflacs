@@ -28,7 +28,6 @@ final class ConvertControls {
 		panel.add(overwriteExisting, BorderLayout.CENTER);
 		panel.add(button, BorderLayout.SOUTH);
 
-		overwriteExisting.setEnabled(false);
 		overwriteExisting.addItemListener(event -> {
 			options.overwrite(event.getStateChange() == ItemEvent.SELECTED);
 		});

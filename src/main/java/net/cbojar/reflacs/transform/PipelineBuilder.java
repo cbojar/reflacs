@@ -3,7 +3,6 @@ package net.cbojar.reflacs.transform;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import net.cbojar.reflacs.formats.Format;
 
@@ -12,50 +11,48 @@ public final class PipelineBuilder {
 	private Destination destination = null;
 	private Format format = null;
 	private Renamer renamer = Renamer.NOOP;
-	private final List<IncludeFilter> includeFilters = new ArrayList<>();
+	private final List<Filter> includeFilters = new ArrayList<>();
 
 	PipelineBuilder() {
 		// Prevent public instantiation
 	}
 
-	public PipelineBuilder withSource(final Source newSource) {
+	public PipelineBuilder source(final Source newSource) {
 		source = requireNonNull(newSource, "New source must not be null");
 		return this;
 	}
 
-	public PipelineBuilder withDestination(final Destination newDestination) {
+	public PipelineBuilder destination(final Destination newDestination) {
 		destination = requireNonNull(newDestination, "New destination must not be null");
 		return this;
 	}
 
-	public PipelineBuilder withFormat(final Format newFormat) {
+	public PipelineBuilder format(final Format newFormat) {
 		format = requireNonNull(newFormat, "New format must not be null");
 		return this;
 	}
 
-	public PipelineBuilder withRenamer(final Renamer newRenamer) {
+	public PipelineBuilder renamer(final Renamer newRenamer) {
 		renamer = requireNonNull(newRenamer, "New renamer must not be null");
 		return this;
 	}
 
-	public PipelineBuilder addIncludeFilter(final IncludeFilter filter) {
+	public PipelineBuilder include(final Filter filter) {
 		includeFilters.add(requireNonNull(filter, "Include filter must not be null"));
 		return this;
 	}
 
-	public PipelineBuilder addIncludeFilters(final Collection<IncludeFilter> filters) {
-		includeFilters.addAll(
-			noneNull(
-				requireNonNull(
-					filters,
-					"Include filters collection must not be null"),
-				"Include filters collection must not contain null"));
+	public PipelineBuilder includeIf(final boolean add, final Filter filter) {
+		return add ? include(filter) : this;
+	}
+
+	public PipelineBuilder exclude(final Filter filter) {
+		includeFilters.add(requireNonNull(filter, "Exclude filter must not be null").negate());
 		return this;
 	}
 
-	public PipelineBuilder withIncludeFilters(final Collection<IncludeFilter> filters) {
-		includeFilters.clear();
-		return addIncludeFilters(filters);
+	public PipelineBuilder excludeIf(final boolean add, final Filter filter) {
+		return add ? exclude(filter) : this;
 	}
 
 	public Pipeline finish() {
@@ -65,15 +62,5 @@ public final class PipelineBuilder {
 			requireNonNull(format, "Format must be specified"),
 			renamer,
 			includeFilters);
-	}
-
-	private static <T> Collection<T> noneNull(final Collection<T> values, final String message) {
-		assert values != null;
-
-		if (values.stream().anyMatch(v -> v == null)) {
-			throw new IllegalArgumentException(message);
-		}
-
-		return values;
 	}
 }

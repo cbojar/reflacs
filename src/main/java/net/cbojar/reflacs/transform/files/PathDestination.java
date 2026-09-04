@@ -40,6 +40,12 @@ public final class PathDestination implements Destination {
 		return Formats.withOptions(Options.of(properties));
 	}
 
+
+	@Override
+	public boolean exists(final Path path) {
+		return Files.exists(root.resolve(path));
+	}
+
 	@Override
 	public void write(final Output output) throws IOException {
 		final Path destination = root.resolve(output.name());
