@@ -9,9 +9,11 @@ import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import net.cbojar.reflacs.formats.Format;
+import net.cbojar.reflacs.transform.Destination;
 import net.cbojar.reflacs.transform.Pipeline;
+import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
-import net.cbojar.reflacs.transform.files.FormatFile;
 import net.cbojar.reflacs.transform.files.PathDestination;
 import net.cbojar.reflacs.transform.files.PathSource;
 
@@ -52,10 +54,14 @@ final class MainWindow {
 	private static Consumer<ConvertOptions> runTransform(final Messages messages, final Paths paths, final Transform transform) {
 		return options ->
 			messages.reportErrors(() -> {
+				final Source source = PathSource.from(paths.source());
+				final Destination destination = PathDestination.to(paths.destination());
+				final Format format = destination.readFormat();
+
 				Pipeline.build()
-					.withSource(PathSource.from(paths.source()))
-					.withDestination(PathDestination.to(paths.destination()))
-					.withFormat(FormatFile.readDirectory(paths.destination()))
+					.withSource(source)
+					.withDestination(destination)
+					.withFormat(format)
 					.finish()
 					.transform(transform);
 			});

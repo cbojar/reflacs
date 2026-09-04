@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import net.cbojar.reflacs.formats.Format;
+import net.cbojar.reflacs.transform.Destination;
 import net.cbojar.reflacs.transform.Pipeline;
+import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
-import net.cbojar.reflacs.transform.files.FormatFile;
 import net.cbojar.reflacs.transform.files.PathDestination;
 import net.cbojar.reflacs.transform.files.PathSource;
 import net.cbojar.reflacs.ui.UI;
@@ -35,10 +37,14 @@ public final class CLI implements UI {
 
 	@Override
 	public void run() throws IOException {
+		final Source source = PathSource.from(sourceRoot);
+		final Destination destination = PathDestination.to(destinationRoot);
+		final Format format = destination.readFormat();
+
 		Pipeline.build()
-			.withSource(PathSource.from(sourceRoot))
-			.withDestination(PathDestination.to(destinationRoot))
-			.withFormat(FormatFile.readDirectory(destinationRoot))
+			.withSource(source)
+			.withDestination(destination)
+			.withFormat(format)
 			.finish()
 			.transform(transform);
 	}
