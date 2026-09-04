@@ -4,17 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collections;
 import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import net.cbojar.reflacs.formats.Format;
-import net.cbojar.reflacs.transform.Destination;
 import net.cbojar.reflacs.transform.Pipeline;
-import net.cbojar.reflacs.transform.Renamer;
-import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
 import net.cbojar.reflacs.transform.files.FormatFile;
 import net.cbojar.reflacs.transform.files.PathDestination;
@@ -57,14 +52,12 @@ final class MainWindow {
 	private static Consumer<ConvertOptions> runTransform(final Messages messages, final Paths paths, final Transform transform) {
 		return options ->
 			messages.reportErrors(() -> {
-				final Source source = PathSource.from(paths.source());
-				final Destination destination = PathDestination.to(paths.destination());
-				final Format format = FormatFile.readDirectory(paths.destination());
-				final Renamer renamer = name -> name;
-
-				final Pipeline pipeline = Pipeline.of(source, destination, format, renamer, Collections.emptyList());
-
-				pipeline.transform(transform);
+				Pipeline.build()
+					.withSource(PathSource.from(paths.source()))
+					.withDestination(PathDestination.to(paths.destination()))
+					.withFormat(FormatFile.readDirectory(paths.destination()))
+					.finish()
+					.transform(transform);
 			});
 	}
 

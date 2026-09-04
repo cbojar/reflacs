@@ -2,7 +2,6 @@ package net.cbojar.reflacs.transform;
 
 import java.io.IOException;
 import java.nio.file.Path;
-
 import net.cbojar.reflacs.formats.Format;
 
 public final class Pipeline {
@@ -12,7 +11,7 @@ public final class Pipeline {
 	private final Renamer renamer;
 	private final Iterable<IncludeFilter> includeFilters;
 
-	private Pipeline(final Source source, final Destination destination, final Format format, final Renamer renamer, final Iterable<IncludeFilter> includeFilters) {
+	Pipeline(final Source source, final Destination destination, final Format format, final Renamer renamer, final Iterable<IncludeFilter> includeFilters) {
 		this.source = source;
 		this.destination = destination;
 		this.format = format;
@@ -20,8 +19,8 @@ public final class Pipeline {
 		this.includeFilters = includeFilters;
 	}
 
-	public static Pipeline of(final Source source, final Destination destination, final Format format, final Renamer renamer, final Iterable<IncludeFilter> includeFilters) {
-		return new Pipeline(source, destination, format, renamer, includeFilters);
+	public static PipelineBuilder build() {
+		return new PipelineBuilder();
 	}
 
 	public void transform(final Transform transform) throws IOException {
@@ -40,7 +39,7 @@ public final class Pipeline {
 	}
 
 	private boolean include(final Path inputName, final Path outputName) throws IOException {
-		final IncludeFilterables filterables = IncludeFilterables.of(inputName, outputName, format);
+		final Filterables filterables = new Filterables(inputName, outputName, format);
 
 		for (final IncludeFilter filter : includeFilters) {
 			if (!filter.include(filterables)) {
