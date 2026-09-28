@@ -16,6 +16,7 @@ import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
 import net.cbojar.reflacs.transform.files.PathDestination;
 import net.cbojar.reflacs.transform.files.PathSource;
+import net.cbojar.reflacs.transform.files.WindowsRenamer;
 
 final class MainWindow {
 	private final JFrame window;
@@ -62,6 +63,7 @@ final class MainWindow {
 					.source(source)
 					.destination(destination)
 					.format(format)
+					.renameIf(options.safeNames(), WindowsRenamer.instance())
 					.excludeIf(!options.overwrite(), filterables -> destination.exists(filterables.output()))
 					.finish()
 					.transform(transform);

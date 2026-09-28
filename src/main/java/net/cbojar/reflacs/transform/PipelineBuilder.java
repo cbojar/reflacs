@@ -10,7 +10,7 @@ public final class PipelineBuilder {
 	private Source source = null;
 	private Destination destination = null;
 	private Format format = null;
-	private Renamer renamer = Renamer.NOOP;
+	private final Renamers renamers = Renamers.create();
 	private final List<Filter> includeFilters = new ArrayList<>();
 
 	PipelineBuilder() {
@@ -32,9 +32,13 @@ public final class PipelineBuilder {
 		return this;
 	}
 
-	public PipelineBuilder renamer(final Renamer newRenamer) {
-		renamer = requireNonNull(newRenamer, "New renamer must not be null");
+	public PipelineBuilder rename(final Renamer renamer) {
+		renamers.add(requireNonNull(renamer, "Renamer must not be null"));
 		return this;
+	}
+
+	public PipelineBuilder renameIf(final boolean add, final Renamer renamer) {
+		return add ? rename(renamer) : this;
 	}
 
 	public PipelineBuilder include(final Filter filter) {
@@ -60,7 +64,7 @@ public final class PipelineBuilder {
 			requireNonNull(source, "Source must be specified"),
 			requireNonNull(destination, "Destination must be specified"),
 			requireNonNull(format, "Format must be specified"),
-			renamer,
+			renamers,
 			includeFilters);
 	}
 }
