@@ -9,8 +9,10 @@ import net.cbojar.reflacs.transform.Destination;
 import net.cbojar.reflacs.transform.Pipeline;
 import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
+import net.cbojar.reflacs.transform.files.FilesPathStore;
 import net.cbojar.reflacs.transform.files.PathDestination;
 import net.cbojar.reflacs.transform.files.PathSource;
+import net.cbojar.reflacs.transform.files.PathStore;
 import net.cbojar.reflacs.ui.UI;
 
 public final class CLI implements UI {
@@ -37,8 +39,9 @@ public final class CLI implements UI {
 
 	@Override
 	public void run() throws IOException {
-		final Source source = PathSource.from(sourceRoot);
-		final Destination destination = PathDestination.to(destinationRoot);
+		final PathStore store = FilesPathStore.instance();
+		final Source source = PathSource.from(store, sourceRoot);
+		final Destination destination = PathDestination.to(store, destinationRoot);
 		final Format format = destination.readFormat();
 
 		Pipeline.build()

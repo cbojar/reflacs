@@ -31,7 +31,7 @@ final class Opus implements Format {
 
 	@Override
 	public Optional<String> bitrate() {
-		return options.get("bitrate");
+		return options.bitrate();
 	}
 
 	@Override

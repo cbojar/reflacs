@@ -29,12 +29,12 @@ final class AAC implements Format {
 
 	@Override
 	public Optional<String> quality() {
-		return options.get("quality");
+		return options.quality();
 	}
 
 	@Override
 	public Optional<String> bitrate() {
-		return options.get("bitrate");
+		return options.bitrate();
 	}
 
 	@Override
