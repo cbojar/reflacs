@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -26,10 +25,10 @@ class SourceTest {
 		assertThat(Integer.valueOf(inputs.size()), is(Integer.valueOf(2)));
 
 		assertThat(inputs.get(0).name(), is(Path.of("flac1")));
-		assertThat(extract(inputs.get(0).data()), is(bytes(1, 2, 3)));
+		assertThat(inputs.get(0).data(), is(bytes(1, 2, 3)));
 
 		assertThat(inputs.get(1).name(), is(Path.of("flac2")));
-		assertThat(extract(inputs.get(1).data()), is(bytes(2, 3, 4)));
+		assertThat(inputs.get(1).data(), is(bytes(2, 3, 4)));
 	}
 
 	private static byte[] bytes(final int... values) {
@@ -42,11 +41,5 @@ class SourceTest {
 
 	private static <T> List<T> toList(final Iterable<T> iterable) {
 		return StreamSupport.stream(iterable.spliterator(), false).toList();
-	}
-
-	private static byte[] extract(final Bytes bytes) throws IOException {
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		bytes.writeTo(out);
-		return out.toByteArray();
 	}
 }

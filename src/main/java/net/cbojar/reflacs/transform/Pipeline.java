@@ -33,7 +33,7 @@ public final class Pipeline {
 			final Path outputName = rename(input.name());
 
 			if (include(input.name(), outputName)) {
-				final Bytes outputData = transform.transform(format, input.data());
+				final byte[] outputData = transform.transform(format, input.data());
 				destination.write(Output.of(outputName, outputData));
 			}
 		}

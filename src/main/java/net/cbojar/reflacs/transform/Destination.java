@@ -39,7 +39,7 @@ public final class Destination {
 		final Path destination = root.resolve(output.name());
 
 		try (OutputStream out = store.outputStreamTo(destination)) {
-			output.data().writeTo(out);
+			out.write(output.data());
 		}
 	}
 }
