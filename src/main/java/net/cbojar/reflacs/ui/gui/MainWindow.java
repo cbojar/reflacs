@@ -11,13 +11,11 @@ import javax.swing.WindowConstants;
 
 import net.cbojar.reflacs.formats.Format;
 import net.cbojar.reflacs.transform.Destination;
+import net.cbojar.reflacs.transform.PathStore;
 import net.cbojar.reflacs.transform.Pipeline;
 import net.cbojar.reflacs.transform.Source;
 import net.cbojar.reflacs.transform.Transform;
 import net.cbojar.reflacs.transform.files.FilesPathStore;
-import net.cbojar.reflacs.transform.files.PathDestination;
-import net.cbojar.reflacs.transform.files.PathSource;
-import net.cbojar.reflacs.transform.files.PathStore;
 import net.cbojar.reflacs.transform.files.WindowsRenamer;
 
 final class MainWindow {
@@ -58,8 +56,8 @@ final class MainWindow {
 		return options ->
 			messages.reportErrors(() -> {
 				final PathStore store = FilesPathStore.instance();
-				final Source source = PathSource.from(store, paths.source());
-				final Destination destination = PathDestination.to(store, paths.destination());
+				final Source source = Source.from(store, paths.source());
+				final Destination destination = Destination.to(store, paths.destination());
 				final Format format = destination.readFormat();
 
 				Pipeline.build()

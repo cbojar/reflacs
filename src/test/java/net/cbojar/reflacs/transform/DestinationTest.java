@@ -1,7 +1,6 @@
-package net.cbojar.reflacs.transform.files;
+package net.cbojar.reflacs.transform;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -11,16 +10,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import net.cbojar.reflacs.formats.Format;
-import net.cbojar.reflacs.transform.Destination;
-import net.cbojar.reflacs.transform.Output;
 
-class PathDestinationTest {
-
+public class DestinationTest {
 	@Test
 	public void shouldSeeAFileThatExists() {
 		final PathStore store = new InMemoryPathStore()
 			.write("/destination/exists.file", bytes(1, 2, 3));
-		final Destination destination = PathDestination.to(store, Path.of("/destination"));
+		final Destination destination = Destination.to(store, Path.of("/destination"));
 
 		final boolean exists = destination.exists(Path.of("/destination/exists.file"));
 
@@ -31,7 +27,7 @@ class PathDestinationTest {
 	public void shouldNotSeeAFileThatDoesNotExist() {
 		final PathStore store = new InMemoryPathStore()
 			.write("/destination/exists.file", bytes(1, 2, 3));
-		final Destination destination = PathDestination.to(store, Path.of("/destination"));
+		final Destination destination = Destination.to(store, Path.of("/destination"));
 
 		final boolean exists = destination.exists(Path.of("/destination/notexists.file"));
 
@@ -47,7 +43,7 @@ class PathDestinationTest {
 				properties.setProperty("quality", "9");
 			});
 
-		final Destination destination = PathDestination.to(store, Path.of("/destination"));
+		final Destination destination = Destination.to(store, Path.of("/destination"));
 
 		final Format format = destination.readFormat();
 
@@ -59,7 +55,7 @@ class PathDestinationTest {
 	@Test
 	public void shouldThrowWhenTheReflacsPropertiesAreMissing() {
 		final PathStore store = new InMemoryPathStore();
-		final Destination destination = PathDestination.to(store, Path.of("/destination"));
+		final Destination destination = Destination.to(store, Path.of("/destination"));
 
 		assertThrows(IOException.class, () -> destination.readFormat());
 	}
@@ -67,7 +63,7 @@ class PathDestinationTest {
 	@Test
 	public void shouldWriteOutput() throws IOException {
 		final InMemoryPathStore store = new InMemoryPathStore();
-		final Destination destination = PathDestination.to(store, Path.of("/destination"));
+		final Destination destination = Destination.to(store, Path.of("/destination"));
 		final Output output = Output.of(Path.of("output.file"), bytes(1, 2, 3));
 
 		destination.write(output);

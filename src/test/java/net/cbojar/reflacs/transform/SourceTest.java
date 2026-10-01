@@ -1,7 +1,9 @@
-package net.cbojar.reflacs.transform.files;
+package net.cbojar.reflacs.transform;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,13 +11,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import net.cbojar.reflacs.transform.Bytes;
-import net.cbojar.reflacs.transform.Input;
-import net.cbojar.reflacs.transform.Source;
-
-import org.junit.jupiter.api.Test;
-
-class PathSourceTest {
+class SourceTest {
 	@Test
 	public void shouldReadListOfFlacFiles() throws IOException {
 		final PathStore store = new InMemoryPathStore()
@@ -23,7 +19,7 @@ class PathSourceTest {
 			.write("/source/flac2.flac", bytes(2, 3, 4))
 			.write("/source/notflac.txt", bytes(3, 4, 5))
 			.write("/elsewhere/flac3.flac", bytes(4, 5, 6));
-		final Source source = PathSource.from(store, Path.of("/source"));
+		final Source source = Source.from(store, Path.of("/source"));
 
 		final List<Input> inputs = toList(source.inputs());
 

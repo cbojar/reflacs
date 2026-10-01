@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import net.cbojar.reflacs.transform.PathStore;
+
 public final class FilesPathStore implements PathStore {
 	private static final FilesPathStore INSTANCE = new FilesPathStore();
 

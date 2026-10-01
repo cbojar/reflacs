@@ -1,4 +1,4 @@
-package net.cbojar.reflacs.transform.files;
+package net.cbojar.reflacs.transform;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
